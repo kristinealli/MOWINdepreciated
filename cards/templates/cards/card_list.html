@@ -1,0 +1,17 @@
+{% extends "cards/base.html" %}
+{% load humanize %}
+{% block content %}
+<h2>ALL CARDS</h2>
+{% for card in card_list %}
+{% ifchanged card.subject %}
+<h3 class="subject-text">{{ card.subject }}</h3>
+{% endifchanged %}
+<article class="card">
+    <p class="anishinaabemowin-text">{{ card.anishinaabemowin }}</p>
+    <p class="english-text">{{ card.english }}</p>
+</article>
+{% empty %}
+<p>No cards available.</p>
+{% include "cards/card.html" %}
+{% endfor %}
+{% endblock content %}

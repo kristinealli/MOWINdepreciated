@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Flashcards</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chilanka&family=Gowun+Dodum&family=Miniver&display=swap"
+        rel="stylesheet">
+</head>
+    <header class="head">
+        <h1 class="miniver-regular">Farts While Running</h1>
+    </header>
+    <body class="field"
+    <main>
+    <div>
+        {% block content %}
+            <!-- <h2 class="gowun-dodum-regular">Welcome to your Flashcards app!</h2>
+            <p class="chilanka-regular">Start learning new vocabulary today!</p> -->
+        {% endblock content %}
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,164 @@
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Chilanka&family=Gowun+Dodum&family=Miniver&display=swap');
+
+/* Custom CSS */
+:root {
+    --accent: #6e48ad;
+    --accent-bg: white;
+    --bg: #fff;
+    --text: #212121;
+    --text-light: #585858;
+    --border: #d8dae1;
+    --code: #d81b60;
+    --preformatted: #444;
+    --sunnyyellow:#F8C11F;
+    --mutedpink:#D6A0C7; 
+    --mintblue: #A9DDD0;
+    --peach:#FCE3C7;
+}
+
+.miniver-regular {
+    font-family: "Miniver", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.gowun-dodum-regular {
+    font-family: "Gowun Dodum", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.chilanka-regular {
+    font-family: "Chilanka", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.field {
+    background-color: var(--mintblue);
+    
+}
+
+.head {
+
+    background-color: black;
+    color: var(--peach);
+        text-shadow: #FC0 1px 0 10px;
+    
+}
+
+html {
+    font-family: 'Chilanka', sans-serif;
+}
+
+/* article {
+    background-color: #FCE3C7;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 1em;
+    margin: 1em 0;
+
+} */
+
+h2 {
+    text-align: center;
+    color: white;
+    font-family: "Gowun Dodum", sans-serif;
+    background-color: #D6A0C7;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2,
+h4 {
+    margin-top: 2px;
+}
+
+hr {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+button,
+a[role="button"] {
+    color: white;
+    text-decoration: none;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+}
+
+/* Card styling */
+
+.card {
+    background-color: var(--peach);
+    border: 9px solid var(--sunnyyellow);
+    border-radius: 4px;
+    padding: 16px;
+    margin: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 250px;
+    height: 250px;
+    display: inline-block;
+    text-align: center;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 16px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Text styling inside cards */
+.card p {
+    margin: 0.5em 0;
+}
+
+.card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5em;
+}
+
+/* Highlight the subject */
+.card strong {
+    color: var(--accent);
+}
+
+
+
+.anishinaabemowin-text {
+ /* font-family: "Gowun Dodum", sans-serif; */
+    font-family: "Gowun Dodum", sans-serif;
+
+    font-size: 2rem;
+
+}
+
+.english-text {
+    font-family: "Gowun Dodum", sans-serif;
+    color: #212121;
+    font-size: 2rem;
+    font-style: italic;
+        color: var(--mutedpink); /* Accent color */
+
+}
+
+.subject-text {
+    font-family: "Miniver", cursive; /* Example font */
+    color: var(--mutedpink);
+    font-size: 2rem;
+    text-align: justify;
+    margin-top: 5px;
+    margin-bottom: 2px;
+    text-shadow: var(--peach) 1px 0 10px;
+}
+
+/* Media query to handle smaller screens */
+@media (max-width: 600px) {
+    .card-grid {
+        grid-template-columns: 1fr; /* Switch to single column on smaller screens */
+    }
+}
