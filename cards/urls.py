@@ -18,7 +18,7 @@
 
 
 from django.urls import path
-from .views import CardListView, CardCreateView, CardUpdateView, BoxView, PreviousCardView, NextCardView, AboutView, DeckListView, DeckDetailView, DeckCreateView
+from .views import CardListView, CardCreateView, CardUpdateView, BoxView, PreviousCardView, NextCardView, AboutView, DeckListView, DeckDetailView, DeckCreateView, CardUploadView, CardDeleteView, DeckDeleteView
 
 urlpatterns = [
     path("", CardListView.as_view(), name="card-list"),
@@ -29,7 +29,12 @@ urlpatterns = [
     path('card/<int:pk>/previous/', PreviousCardView.as_view(), name='previous-card'),
     path('card/<int:pk>/next/', NextCardView.as_view(), name='next-card'),
     path('about/', AboutView.as_view(), name='about'),
-    path('decks/', DeckListView.as_view(), name='deck-list'),  # Decks list page
-    path('decks/<str:subject>/', DeckDetailView.as_view(), name='deck-detail'),  # Cards by subject
-    path('decks/add/', DeckCreateView.as_view(), name='deck-create'),  # Add a new deck
+    path('decks/', DeckListView.as_view(), name='deck-list'),  
+    path('decks/<str:subject>/', DeckDetailView.as_view(), name='deck-detail'),  
+    path('decks/add/', DeckCreateView.as_view(), name='deck-create'),  
+    path('cards/upload/', CardUploadView.as_view(), name='cards-upload'), 
+    path('card/<int:pk>/delete/', CardDeleteView.as_view(), name='card-delete'),
+    path('decks/<str:subject>/delete/', DeckDeleteView.as_view(), name='deck-delete'),
+    path('decks/<str:subject>/add-card/', CardCreateView.as_view(), name='card-create'),
+
 ]  

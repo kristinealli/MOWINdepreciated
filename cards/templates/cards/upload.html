@@ -1,0 +1,36 @@
+{% extends "cards/base.html" %}
+
+{% block content %}
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Upload Deck</h1>
+            <form method="post" enctype="multipart/form-data">
+                <p>This is the upload template.</p>
+                {% csrf_token %}
+
+                <!-- Deck Name Field -->
+                <div class="field">
+                    {{ form.deck_name.label_tag }}
+                    <div class="control">
+                        {{ form.deck_name }}
+                    </div>
+                </div>
+
+                <!-- File Upload Field -->
+                <div class="field">
+                    {{ form.file.label_tag }}
+                    <div class="control">
+                        {{ form.file }}
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="field">
+                    <div class="control">
+                        <button type="submit" class="button is-primary">Upload</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}
