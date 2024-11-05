@@ -121,7 +121,7 @@ STATIC_URL = '/static/'
 
 # If your 'static' folder is not in the default location, you can specify its location:
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    BASE_DIR / './cards/static',
 ]
 
 # Default primary key field type

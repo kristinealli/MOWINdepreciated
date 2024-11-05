@@ -1,0 +1,29 @@
+{% extends "cards/base.html" %}
+
+{% block content %}
+    {% if card %}
+        <h2>✏️ Edit Card</h2>
+    {% else %}
+        <h2>✨ Create New Card</h2>
+    {% endif %}
+
+<!-- Display messages -->
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<!-- Form for creating a new card -->
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save Card">
+</form>
+
+<!-- Cancel link -->
+<a href="{% url 'card-list' %}">Cancel</a>
+
+{% endblock content %}

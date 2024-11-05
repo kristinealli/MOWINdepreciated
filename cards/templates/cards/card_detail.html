@@ -1,0 +1,92 @@
+<article class="card">
+    <div class="buttons is-centered mt-3">
+        <div class="card-content has-text-centered">
+            <p class="title is-4">{{ card.anishinaabemowin }}</p>
+            <button class="button is-small is-info mt-3" id="reveal-btn" onclick="toggleEnglish()">
+                <span>Reveal English</span>
+            </button>
+
+            <!-- English Word (Hidden initially) -->
+            <p class="subtitle is-5" id="english-word" style="display: none;">{{ card.english }}</p>
+
+            <!-- Edit Button -->
+            <a href="{% url 'card-update' card.id %}" class="button is-small is-warning mt-3">
+                <span>Edit Card</span>
+            </a>
+        </div>
+        <!-- Mark as Known / Unknown Form -->
+        <div class="buttons has-text-centered mt-3">
+            <form method="post" action="{% url 'card-check' %}">
+                {% csrf_token %}
+                <input type="hidden" name="card_id" value="{{ card.id }}">
+
+                <!-- Known Button -->
+                <button class="button is-success" type="submit" name="solved" value="True">
+                    ✅ 
+                </button>
+
+                <!-- Unknown Button -->
+                <button class="button is-danger" type="submit" name="solved" value="False">
+                    ❌ 
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <footer class="card-footer">
+        <a href="{% url 'previous-card' card.id %}" class="card-footer-item">
+            <span class="icon">
+                ⬅️
+            </span>
+            <span>Previous</span>
+        </a>
+        <a href="{% url 'next-card' card.id %}" class="card-footer-item">
+            <span class="icon">
+                ➡️
+            </span>
+            <span>Next</span>
+        </a>
+    </footer>
+</article>
+
+<script>
+    function toggleEnglish() {
+        const englishWord = document.getElementById('english-word');
+        englishWord.style.display = englishWord.style.display === 'none' ? 'block' : 'none';
+    }
+</script>
+
+
+
+
+
+<!-- <article class="hero-body">
+    <div class="container has-text-centered">
+        <div
+        <p class="title">{{ card.anishinaabemowin }}</p>
+        {% if not check_card %}
+            <p class="subtitle">{{ card.english }}</p>
+            <hr>
+            <a href="{% url 'card-update' card.id %}" role="button">
+            ✏️ Edit Card
+            </a>
+        {% else %}
+        <details>
+            <summary>Reveal English</summary>
+            <p class="subtitle">{{ card.english }}</p>
+        </details>
+        <hr>
+        {% include "cards/card_check_form.html" with solved=True %}
+        {% include "cards/card_check_form.html" with solved=False %}
+        {% endif %}
+    </div>
+</article>
+
+
+<section class="hero is-medium is-link">
+    <div class="hero-body">
+        <p class="title">{{card.anishinaabemowin}}</p>
+    </div>
+</section> -->
+

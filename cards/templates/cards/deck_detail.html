@@ -1,0 +1,22 @@
+{% extends "cards/base.html" %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 class="title">{{ subject }} Deck</h1>
+
+        <div class="columns is-multiline">
+            {% for card in cards %}
+            <div class="column is-one-third">
+                <div class="box">
+                    <p class="title">{{ card.anishinaabemowin }}</p>
+                    <p class="subtitle">{{ card.english }}</p>
+                    <a href="{% url 'card-update' card.id %}" class="button is-small is-warning is-outlined">Edit</a>
+                    <a href="{% url 'card-update' card.id %}" class="button is-small is-danger is-outlined">Delete</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

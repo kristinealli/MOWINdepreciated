@@ -1,0 +1,217 @@
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Chilanka&family=Gowun+Dodum&family=Miniver&family=Special+Elite&display=swap" rel="stylesheet');
+
+/* Custom CSS */
+
+*, :before, :after{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --accent: #6e48ad;
+    --accent-bg: white;
+    --bg: #fff;
+    --text: #212121;
+    --text-light: #585858;
+    --border: #d8dae1;
+    --code: #d81b60;
+    --preformatted: #444;
+    --sunnyyellow: #F8C11F;
+    --mutedpink: #D6A0C7;
+    --mintblue: #A9DDD0;
+    --peach: #FCE3C7;
+}
+
+.miniver-regular {
+    font-family: "Miniver", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.gowun-dodum-regular {
+    font-family: "Gowun Dodum", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.chilanka-regular {
+    font-family: "Chilanka", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.special-elite-regular {
+    font-family: "Special Elite", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+.field {
+    background-color: #a9ddd0;
+    background-image: url("https://transparenttextures.com/patterns/wood-pattern.png");
+}
+
+.head {
+
+    background-color: black;
+    color: var(--peach);
+    text-shadow: #FC0 1px 0 10px;
+
+}
+
+html {
+    font-family: 'Chilanka', sans-serif;
+}
+
+h2 {
+    text-align: center;
+    color: var(--peach);
+    font-family: "Special Elite", system-ui;
+    font-size: 1.5rem;
+    background-color: black;
+    box-shadow: inset 0 0 10px rgba(240, 237, 237, 0.1);
+    padding: 10px;
+    border: .125px solid var(--mutedpink);
+    max-width: fit-content;
+}
+
+h2,
+h4 {
+    margin-top: 2px;
+}
+
+hr {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+button,
+a[role="button"] {
+    color: white;
+    text-decoration: none;
+}
+
+/* input,
+select,
+textarea {
+    width: 100%;
+} */
+
+
+/* Card styling */
+
+.card {
+    z-index: 1;
+    background-color: #fce3c7;
+    background-image: url("https://transparenttextures.com/patterns/cardboard.png");
+    border: .25px solid white;
+    border-radius: 2px;
+    padding: 16px;
+    margin: 20px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
+    transition: transform 1s ease, box-shadow 1s ease;
+    height: fit-content;
+    display: grid;
+    place-items: center;
+    text-align: center;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 16px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Text styling inside cards */
+.card p {
+    margin: 0.5em 0;
+}
+
+.card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5em;
+}
+
+/* Highlight the subject */
+.card strong {
+    color: var(--accent);
+}
+
+
+
+.anishinaabemowin-text {
+    /* font-family: "Gowun Dodum", sans-serif; */
+    /* font-family: "Gowun Dodum", sans-serif; */
+    font-family: "Special Elite", system-ui;
+    font-size: 2rem;
+
+}
+
+.english-text {
+    font-family: "Gowun Dodum", sans-serif;
+    /* font-family: "Special Elite", system-ui; */
+    color: #212121;
+    font-size: 1.5rem;
+    font-style: italic;
+    /* color: var(--mutedpink); Accent color */
+    color: black;
+
+}
+
+.subject-text {
+    font-family: "Miniver", cursive;
+    /* Example font */
+    color: var(--mutedpink);
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 2px;
+    text-shadow: var(--peach) 1px 0 10px;
+    background-color: black;
+    size: fit-content;
+    padding: 10px;
+}
+
+.messages {
+    list-style: none;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #d4edda;
+    border-left: 5px solid #28a745;
+    color: #155724;
+}
+
+.messages li {
+    padding: 5px;
+}
+
+
+/*Box Styling */
+
+header>nav a, header>nav a:visited{
+    background-color: #a9ddd0;
+}
+
+
+/* Media queries to handle screen sizes */
+
+/* @media (min-width: 700px) {
+    .card-grid {
+        grid-template-columns: repeat(3, 1fr); 
+    }
+}
+
+
+@media (max-width: 900px) {
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two columns on medium-sized screens 
+    }
+}
+
+@media (max-width: 600px) {
+    .card-grid {
+        grid-template-columns: 1fr; /* Single column on smaller screens 
+    }
+} */

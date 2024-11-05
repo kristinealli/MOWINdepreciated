@@ -1,17 +1,34 @@
 {% extends "cards/base.html" %}
 {% load humanize %}
+
 {% block content %}
-<h2>ALL CARDS</h2>
-{% for card in card_list %}
-{% ifchanged card.subject %}
-<h3 class="subject-text">{{ card.subject }}</h3>
-{% endifchanged %}
-<article class="card">
-    <p class="anishinaabemowin-text">{{ card.anishinaabemowin }}</p>
-    <p class="english-text">{{ card.english }}</p>
-</article>
-{% empty %}
-<p>No cards available.</p>
-{% include "cards/card.html" %}
-{% endfor %}
+
+    <div class="level buttons">
+        <a href="{% url 'card-create' %}" role="button" class="button is-success is-outlined">
+            Create New Card
+        </a>
+        <a href="{% url 'card-create' %}" role="button" class="button is-warning is-outlined">
+            Select a Deck
+        </a>
+        <a href="{% url 'card-create' %}" role="button" class="button is-info is-outlined">
+            Box View
+        </a>
+        <a href="{% url 'card-create' %}" role="button" class="button is-link is-outlined">
+            Deck View
+        </a>
+    </div>
+
+    <h1 class="title has-text-centered is-1">
+        All Cards
+    </h1>
+    
+    {% for card in card_list %}
+        {% ifchanged %}
+            <h2 class="subtitle">🗃 {{ card.box | ordinal }} Box</h2>
+        {% endifchanged %}
+        {% include "cards/card.html" %}
+    {% endfor %}
 {% endblock content %}
+
+
+
