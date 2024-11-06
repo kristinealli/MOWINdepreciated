@@ -26,7 +26,9 @@
         {% ifchanged %}
             <h2 class="subtitle">🗃 {{ card.box | ordinal }} Box</h2>
         {% endifchanged %}
+        
         {% include "cards/card.html" %}
+        
     {% endfor %}
 {% endblock content %}
 

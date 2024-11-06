@@ -14,9 +14,15 @@
                 {% csrf_token %}
                 <button type="submit" class="button is-danger is-outlined">Delete Deck</button>
             </form>
-
-            <!-- Add Card to Deck Button -->
             <a href="{% url 'card-create' %}?subject={{ subject }}" class="button is-primary is-outlined">Add Card</a>
+            <a href="{% url 'deck-list' %}" class="button is-info is-outlined">Back to Decks</a>
+            {% if cards %}
+                <a href="{% url 'card-detail' subject=subject pk=cards.first.id %}" class="button is-link is-outlined" target="_blank">
+                    Review This Deck
+                </a>
+            {% else %}
+                <p>No cards in this deck to review.</p>
+            {% endif %}
         </div>
 
         {% if messages %}

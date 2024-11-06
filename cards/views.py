@@ -6,12 +6,34 @@ from .forms import CardCheckForm, FileUploadForm, CardForm
 from .models import Card
 import random
 
+class AboutView(TemplateView):
+    template_name = "cards/about.html"
+
 class CardDetailView(DetailView):
     model = Card
-    template_name = "cards/card.html"  
+    template_name = "cards/card_detail.html"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        
+        # Get the current card and its subject (deck)
+        card = self.get_object()
+        subject = card.subject
+        
+        # Get all cards in the same deck (subject) ordered by their ID
+        deck_cards = Card.objects.filter(subject=subject).order_by("id")
+        
+        # Find the index of the current card in the ordered deck
+        current_index = list(deck_cards).index(card)
+        
+        # Determine previous and next cards
+        previous_card = deck_cards[current_index - 1] if current_index > 0 else None
+        next_card = deck_cards[current_index + 1] if current_index < len(deck_cards) - 1 else None
+        
+        # Add to context
+        context["previous_card"] = previous_card
+        context["next_card"] = next_card
+        
         return context
 
 class CardListView(ListView):
@@ -81,23 +103,24 @@ class BoxView(CardListView):
         return redirect(request.META.get("HTTP_REFERER"))
 
 class PreviousCardView(View):
-    def get(self, request, pk, *args, **kwargs):
-        # Logic to get the previous card
-        previous_card = Card.objects.filter(id__lt=pk).order_by('-id').first()
+    def get(self, request, subject, pk, *args, **kwargs):
+        # Get previous card in the deck based on subject
+        previous_card = Card.objects.filter(subject=subject, id__lt=pk).order_by('-id').first()
         if previous_card:
-            return redirect('card-detail', pk=previous_card.id)
-        return redirect('card-list')  # Redirect to card list if no previous card
+            return redirect('card-detail', subject=subject, pk=previous_card.id)
+        # Redirect to the last card if no previous card
+        last_card = Card.objects.filter(subject=subject).order_by('-id').first()
+        return redirect('card-detail', subject=subject, pk=last_card.id)
 
 class NextCardView(View):
-    def get(self, request, pk, *args, **kwargs):
-        # Logic to get the next card
-        next_card = Card.objects.filter(id__gt=pk).order_by('id').first()
+    def get(self, request, subject, pk, *args, **kwargs):
+        # Get next card in the deck based on subject
+        next_card = Card.objects.filter(subject=subject, id__gt=pk).order_by('id').first()
         if next_card:
-            return redirect('card-detail', pk=next_card.id)
-        return redirect('card-list')  # Redirect to card list if no next card
-
-class AboutView(TemplateView):
-    template_name = "cards/about.html"
+            return redirect('card-detail', subject=subject, pk=next_card.id)
+        # Redirect to the first card if no next card
+        first_card = Card.objects.filter(subject=subject).order_by('id').first()
+        return redirect('card-detail', subject=subject, pk=first_card.id)
 
 class DeckListView(View):
     template_name = "cards/decks.html"
@@ -141,7 +164,7 @@ class DeckDeleteView(View):
         else:
             messages.error(request, f"No deck found with the subject '{subject}'.")
         return redirect(reverse('deck-list'))
-        
+
 class CardUploadView(FormView):
     template_name = "cards/upload.html"
     form_class = FileUploadForm  
