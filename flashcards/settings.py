@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'cards.apps.CardsConfig',    
+    'cards.apps.CardsConfig',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +129,18 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = 'dashboard'  # Where to redirect after successful login
+LOGIN_URL = 'login'  # Where to redirect if login is required
+LOGOUT_REDIRECT_URL = 'home'  # Add this line to redirect to home after logout
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Instead of:
+SOME_PATH = '~/path/to/something'
+
+# Use:
+SOME_PATH = os.path.expanduser('~/path/to/something')
+# or
+SOME_PATH = '/Users/kristinejohnson/path/to/something'

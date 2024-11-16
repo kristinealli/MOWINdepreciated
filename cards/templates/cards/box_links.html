@@ -1,17 +1,17 @@
 {% load humanize %}
 
-<nav class="navbar">
-    <div class="container is-centered">
-        <ul class="level ">
-            {% for box in boxes %}
-            <li class="navbar-end navbar-item ">
-                <a class="navbar-link" href="{% url 'box' box_num=box.number %}">
-                    🗃 {{ box.number | ordinal }} Box ({{ box.card_count }})
-                </a>
-            </li>
-            {% endfor %}
-        </ul>
+<nav class="navbar is-light">
+    <div class="container">
+        <div class="navbar-menu is-active">
+            <div class="navbar-start is-flex is-justify-content-center is-flex-grow-1">
+                {% for box in boxes %}
+                <li class="navbar-item">
+                    <a class="navbar-link" href="{% url 'box' box.number %}">
+                        🗃 Box {{ box.number }} ({{ box.card_count }})
+                    </a>
+                </li>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </nav>
-
-

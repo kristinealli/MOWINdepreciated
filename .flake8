@@ -1,0 +1,13 @@
+[flake8]
+max-line-length = 88  # Match Black's line length
+exclude = 
+    .git,
+    __pycache__,
+    manage.py,
+    migrations,
+    settings.py  # Optional, if you don't want to lint settings files
+
+# Django-specific plugins
+plugins = 
+    flake8-django,  # Plugin specifically for Django projects
+    flake8-bugbear  # Optional, but helps catch some common issues

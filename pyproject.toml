@@ -1,0 +1,6 @@
+[tool.django-stubs]
+django_settings_module = "flashcards_app"
+
+[tool.pylint.MASTER]
+load-plugins = "pylint_django"
+django-settings-module = "flashcards_app.settings"

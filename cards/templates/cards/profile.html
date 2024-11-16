@@ -1,0 +1,67 @@
+{% extends "cards/base.html" %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-half">
+                <div class="box has-background-black">
+                    <h1 class="title has-text-centered gowun-dodum-regular has-text-primary">Profile</h1>
+                    
+                    <!-- Profile Stats -->
+                    <div class="level has-background-white p-5 box">
+                        <div class="level-item has-text-centered">
+                            <div>
+                                <p class="heading gowun-dodum-regular has-text-grey">Study Streak</p>
+                                <p class="title gowun-dodum-regular has-text-primary">{{ profile.study_streak }}</p>
+                            </div>
+                        </div>
+                        <div class="level-item has-text-centered">
+                            <div>
+                                <p class="heading gowun-dodum-regular has-text-grey">Cards Studied</p>
+                                <p class="title gowun-dodum-regular has-text-primary">{{ profile.total_cards_studied }}</p>
+                            </div>
+                        </div>
+                        <div class="level-item has-text-centered">
+                            <div>
+                                <p class="heading gowun-dodum-regular has-text-grey">Daily Goal</p>
+                                <p class="title gowun-dodum-regular has-text-primary">{{ profile.daily_goal }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Form -->
+                    <form method="post" enctype="multipart/form-data" class="mt-6">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="field">
+                                <label class="label gowun-dodum-regular has-text-weight-medium">{{ field.label }}</label>
+                                <div class="control has-icons-left">
+                                    {{ field }}
+                                </div>
+                                {% if field.help_text %}
+                                    <p class="help gowun-dodum-regular has-text-grey">{{ field.help_text }}</p>
+                                {% endif %}
+                                {% if field.errors %}
+                                    <p class="help is-danger gowun-dodum-regular">{{ field.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        
+                        <div class="field mt-6">
+                            <div class="control has-text-centered">
+                                <button type="submit" class="button is-primary is-medium gowun-dodum-regular has-text-weight-medium is-rounded">
+                                    <span class="icon">
+                                        <i class="fas fa-save"></i>
+                                    </span>
+                                    <span>Update Profile</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

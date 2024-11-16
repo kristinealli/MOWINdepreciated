@@ -6,8 +6,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Mowin - Anishinaabemowin Vocabulary</title>
-        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"> -->
         <link rel="stylesheet" href="{% static 'bulma.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        
     </head>
 
     <body class="hero">
@@ -28,18 +29,18 @@
                         </div>
                         <div id="navbarMenuHeroB" class="navbar-menu">
                             <div class="navbar-end">
-                                <a class="navbar-item is-active">Home</a>
-                                <a class="navbar-item" href="{% url 'deck-list' %}">Card Decks</a>
-                                <a class="navbar-item" href="{% url 'about' %}">About</a>
-                                <a class="navbar-item" href="{% url 'cards-upload' %}">Upload Deck</a>
-                                <span class="navbar-item">
-                                    <a class="button is-info is-inverted">
-                                        <span class="icon">
-                                            <i class="fab fa-github"></i>
-                                        </span>
-                                        <span>Download</span>
-                                    </a>
-                                </span>
+                                <a class="navbar-item gowun-dodum-regular" href="{% url 'home' %}">Home</a>
+                                <a class="navbar-item gowun-dodum-regular" href="{% url 'about' %}">About</a>
+
+                                {% if user.is_authenticated %}
+                                    <a class="navbar-item gowun-dodum-regular" href="{% url 'profile' %}">Profile</a>
+                                    <a class="navbar-item gowun-dodum-regular" href="{% url 'deck-list' %}">Card Decks</a>
+                                    <a class="navbar-item gowun-dodum-regular" href="{% url 'cards-upload' %}">Upload Deck</a>
+                                    <a class="navbar-item is-active gowun-dodum-regular" href="{% url 'logout' %}">Logout</a>
+                                {% else %}
+                                    <a class="navbar-item gowun-dodum-regular" href="{% url 'login' %}">Login</a>
+                                    <a class="navbar-item gowun-dodum-regular" href="{% url 'signup' %}">Sign Up</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -49,17 +50,28 @@
         
         <main style="padding-top: 2rem; padding-bottom: 2rem; overflow-y: auto; height: calc(100vh - 7rem);">
             <div class="hero-body">
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div class="notification is-{{ message.tags }} is-light">
+                                <button class="delete"></button>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 {% block content %}
                 {% endblock %}
             </div>
         </main>
         
-        <footer "position: fixed; bottom: 0;left: 0; right: 0; z-index: 10;" class="is-centered">
-            <div class="is-centered has-background-black">
-                {% include "cards/footer.html" %}
-            </div>
-            <p style="font-style: italic;" class="is-link has-text-centered mt-2">Manido Aaziinencesuk 2024</p>
-        </footer>
+        {% if user.is_authenticated %}
+            {% include "cards/logged_in_footer.html" %}
+        {% endif %}
+        
+        <p class="has-text-centered has-text-grey-lighter gowun-dodum-regular is-size-6 mt-2">
+            Created by Mnidoo Asiniinsag 2024 
+        </p>
         
     </body>
 

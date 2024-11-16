@@ -1,0 +1,64 @@
+{% extends 'cards/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="main-background">
+    <div class="content-box">
+        <div class="box">
+            <h1 class="title has-text-centered gowun-dodum-regular">Profile</h1>
+            
+            <div class="columns is-centered">
+                <div class="column is-narrow">
+                    <div class="field">
+                        <label class="label gowun-dodum-regular">Username</label>
+                        <div class="control">
+                            <input class="input" type="text" value="{{ user.username }}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label gowun-dodum-regular">Email</label>
+                        <div class="control">
+                            <input class="input" type="email" value="{{ user.email }}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label gowun-dodum-regular">Join Date</label>
+                        <div class="control">
+                            <input class="input" type="text" value="{{ user.date_joined|date:'F j, Y' }}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label gowun-dodum-regular">Total Cards Created</label>
+                        <div class="control">
+                            <input class="input" type="text" value="{{ total_cards }}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="field is-grouped is-grouped-centered mt-5">
+                        <p class="control">
+                            <a href="{% url 'profile-edit' %}" class="button is-link gowun-dodum-regular">
+                                <span class="icon">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                                <span>Edit Profile</span>
+                            </a>
+                        </p>
+                        <p class="control">
+                            <a href="{% url 'password_change' %}" class="button is-warning gowun-dodum-regular">
+                                <span class="icon">
+                                    <i class="fas fa-key"></i>
+                                </span>
+                                <span>Change Password</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

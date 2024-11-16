@@ -1,0 +1,52 @@
+{% extends 'cards/base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'cards/background_style.html' %}
+
+<div class="main-background">
+    <div class="content-box">
+        <div class="box">
+            <h1 class="title has-text-centered gowun-dodum-regular">
+                {% if form.instance.pk %}Edit Profile{% else %}Create Profile{% endif %}
+            </h1>
+            
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                <div class="field">
+                    <label class="label gowun-dodum-regular">{{ field.label }}</label>
+                    <div class="control">
+                        {{ field }}
+                    </div>
+                    {% if field.help_text %}
+                    <p class="help">{{ field.help_text }}</p>
+                    {% endif %}
+                    {% if field.errors %}
+                    <p class="help is-danger">{{ field.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div class="field is-grouped is-grouped-centered mt-5">
+                    <p class="control">
+                        <button type="submit" class="button is-success gowun-dodum-regular">
+                            <span class="icon">
+                                <i class="fas fa-save"></i>
+                            </span>
+                            <span>Save Profile</span>
+                        </button>
+                    </p>
+                    <p class="control">
+                        <a href="{% url 'profile-detail' username=user.username %}" 
+                           class="button is-light gowun-dodum-regular">
+                            Cancel
+                        </a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

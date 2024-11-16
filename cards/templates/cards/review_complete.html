@@ -1,0 +1,61 @@
+{% extends "cards/base.html" %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="box has-text-centered">
+            <!-- Session Summary -->
+            <h1 class="title gowun-dodum-regular">Review Complete!</h1>
+            
+            <!-- Stats Summary -->
+            <div class="columns is-centered mt-5">
+                <div class="column is-3">
+                    <div class="box">
+                        <p class="heading gowun-dodum-regular">Cards Reviewed</p>
+                        <p class="title">{{ cards_reviewed }}</p>
+                    </div>
+                </div>
+                <div class="column is-3">
+                    <div class="box">
+                        <p class="heading gowun-dodum-regular">Correct Answers</p>
+                        <p class="title">{{ correct_answers }}</p>
+                    </div>
+                </div>
+                <div class="column is-3">
+                    <div class="box">
+                        <p class="heading gowun-dodum-regular">Accuracy</p>
+                        <p class="title">{{ accuracy|floatformat:1 }}%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Update -->
+            <div class="notification is-info is-light">
+                <p class="gowun-dodum-regular">
+                    Current streak: {{ user_deck.review_streak }} days
+                    {% if streak_milestone %}
+                    <br>
+                    <strong>🎉 New streak milestone reached! 🎉</strong>
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Next Steps -->
+            <div class="buttons is-centered mt-5">
+                <a href="{% url 'study-deck' deck.id %}" class="button is-primary is-medium">
+                    <span class="icon"><i class="fas fa-redo"></i></span>
+                    <span>Study More</span>
+                </a>
+                <a href="{% url 'deck-detail' deck.id %}" class="button is-info is-medium">
+                    <span class="icon"><i class="fas fa-book"></i></span>
+                    <span>Deck Details</span>
+                </a>
+                <a href="{% url 'dashboard' %}" class="button is-light is-medium">
+                    <span class="icon"><i class="fas fa-home"></i></span>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

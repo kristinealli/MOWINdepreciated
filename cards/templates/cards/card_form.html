@@ -22,35 +22,23 @@
         <!-- Form for creating or editing a card -->
         <form method="post">
             {% csrf_token %}
-            <div class="field">
-                <label class="label">Anishinaabemowin</label>
-                <div class="control">
-                    {{ form.anishinaabemowin }}
-                </div>
+            <div class="form-group">
+                <label for="{{ form.anishinaabemowin.id_for_label }}">Anishinaabemowin:</label>
+                {{ form.anishinaabemowin }}
             </div>
-            <div class="field">
-                <label class="label">English</label>
-                <div class="control">
-                    {{ form.english }}
-                </div>
+            <div class="form-group">
+                <label for="{{ form.english.id_for_label }}">English:</label>
+                {{ form.english }}
             </div>
-            <div class="field">
-                <label class="label">Select Current Deck (Subject)</label>
-                <div class="control">
-                    {{ form.subject }}
-                </div>
+            <div class="form-group">
+                <label for="{{ form.pronunciation.id_for_label }}">Pronunciation:</label>
+                {{ form.pronunciation }}
             </div>
-            <div class="field">
-                <label class="label">Or Enter a New Deck Name</label>
-                <div class="control">
-                    {{ form.new_subject }}
-                </div>
+            <div class="form-group">
+                <label for="{{ form.subject.id_for_label }}">Subject:</label>
+                {{ form.subject }}
             </div>
-            <div class="field">
-                <div class="control">
-                    <button type="submit" class="button is-primary">Save Card</button>
-                </div>
-            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
         </form>
 
         <!-- Cancel link -->

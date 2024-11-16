@@ -1,0 +1,70 @@
+{% extends "cards/base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="title is-2 gowun-dodum-regular">Studying: {{ deck.name }}</h1>
+    
+    {% if current_card %}
+        <div class="card">
+            <div class="card-content">
+                <!-- Front of card -->
+                <div id="front" class="content has-text-centered">
+                    <h2 class="title is-3 gowun-dodum-regular">{{ current_card.anishinaabemowin }}</h2>
+                    {% if current_card.pronunciation %}
+                        <p class="subtitle is-5 gowun-dodum-regular">({{ current_card.pronunciation }})</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Back of card (hidden initially) -->
+                <div id="back" class="content has-text-centered" style="display: none;">
+                    <h2 class="title is-3 gowun-dodum-regular">{{ current_card.english }}</h2>
+                </div>
+                
+                <!-- Show/Hide answer button -->
+                <div class="has-text-centered my-4">
+                    <button class="button is-info is-medium gowun-dodum-regular" onclick="toggleAnswer()">
+                        Show Answer
+                    </button>
+                </div>
+                
+                <!-- Review buttons (hidden initially) -->
+                <div id="review-buttons" class="has-text-centered" style="display: none;">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="buttons is-centered mt-4">
+                            <button type="submit" name="correct" value="true" class="button is-success is-medium gowun-dodum-regular">
+                                I knew this one!
+                            </button>
+                            <button type="submit" name="correct" value="false" class="button is-danger is-medium gowun-dodum-regular">
+                                I need to study this more... 
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Box distribution -->
+        <div class="box mt-5">
+            <h3 class="title is-4 gowun-dodum-regular mb-4">Cards in Each Box:</h3>
+            {% for box, count in box_counts.items %}
+                <div class="is-flex is-justify-content-space-between mb-2 gowun-dodum-regular">
+                    <span>Box {{ box }}:</span>
+                    <span>{{ count }} cards</span>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="notification is-success gowun-dodum-regular">
+            No cards due for review! Come back later.
+        </div>
+    {% endif %}
+</div>
+
+<script>
+function toggleAnswer() {
+    document.getElementById('back').style.display = 'block';
+    document.getElementById('review-buttons').style.display = 'block';
+}
+</script>
+{% endblock %}

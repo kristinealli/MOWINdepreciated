@@ -1,0 +1,890 @@
+[
+    {
+        "name": "Household Items",
+        "description": "Common household items",
+        "is_public": true,
+        "cards": [
+            {
+                "anishinaabemowin": "apabiwin",
+                "english": "chair",
+                "pronunciation": "ah-pah-bih-win"
+            },
+            {
+                "anishinaabemowin": "adoopowin",
+                "english": "table",
+                "pronunciation": "ah-doh-poh-win"
+            },
+            {
+                "anishinaabemowin": "mookomaan",
+                "english": "knife",
+                "pronunciation": "moh-koh-mahn"
+            },
+            {
+                "anishinaabemowin": "emikwaan",
+                "english": "spoon",
+                "pronunciation": "eh-mih-kwahn"
+            },
+            {
+                "anishinaabemowin": "badaka'igan",
+                "english": "fork",
+                "pronunciation": "bah-dah-kah-ih-gahn"
+            },
+            {
+                "anishinaabemowin": "onaagan",
+                "english": "plate",
+                "pronunciation": "oh-nah-gahn"
+            },
+            {
+                "anishinaabemowin": "boozhoo-jiimaan",
+                "english": "cup",
+                "pronunciation": "boh-zhoo jih-mahn"
+            },
+            {
+                "anishinaabemowin": "mookomaanens",
+                "english": "small knife",
+                "pronunciation": "moh-koh-mah-nens"
+            },
+            {
+                "anishinaabemowin": "giziibiiga'igan",
+                "english": "soap",
+                "pronunciation": "gih-zee-bee-gah-ih-gahn"
+            },
+            {
+                "anishinaabemowin": "giziibiiga'iganaabik",
+                "english": "washing board",
+                "pronunciation": "gih-zee-bee-gah-ih-gah-nah-bik"
+            },
+            {
+                "anishinaabemowin": "giziibiiga'iganaabikwe",
+                "english": "washing machine",
+                "pronunciation": "gih-zee-bee-gah-ih-gah-nah-bih-kweh"
+            },
+            {
+                "anishinaabemowin": "giziibiiga'iganaabikwewigamig",
+                "english": "laundry room",
+                "pronunciation": "gih-zee-bee-gah-ih-gah-nah-bih-kweh-wih-gah-mig"
+            }
+        ]
+    },
+    {
+        "name": "Numbers",
+        "description": "Numbers 1 through 20 in Anishinaabemowin",
+        "is_public": true,
+        "cards": [
+            {
+                "anishinaabemowin": "bezhik",
+                "english": "one",
+                "pronunciation": "beh-zhik"
+            },
+            {
+                "anishinaabemowin": "niizh",
+                "english": "two",
+                "pronunciation": "neezh"
+            },
+            {
+                "anishinaabemowin": "nswi",
+                "english": "three",
+                "pronunciation": "ns-wee"
+            },
+            {
+                "anishinaabemowin": "niiwin",
+                "english": "four",
+                "pronunciation": "nee-win"
+            },
+            {
+                "anishinaabemowin": "naanan",
+                "english": "five",
+                "pronunciation": "nah-nahn"
+            },
+            {
+                "anishinaabemowin": "ngodwaaswi",
+                "english": "six",
+                "pronunciation": "ngoh-dwah-swee"
+            },
+            {
+                "anishinaabemowin": "niizhwaaswi",
+                "english": "seven",
+                "pronunciation": "neezh-wah-swee"
+            },
+            {
+                "anishinaabemowin": "nshwaaswi",
+                "english": "eight",
+                "pronunciation": "nsh-wah-swee"
+            },
+            {
+                "anishinaabemowin": "zhaangswi",
+                "english": "nine",
+                "pronunciation": "zhahng-swee"
+            },
+            {
+                "anishinaabemowin": "mdaaswi",
+                "english": "ten",
+                "pronunciation": "muh-dah-swee"
+            },
+            {
+                "anishinaabemowin": "mdaaswi-shi-bezhik",
+                "english": "eleven",
+                "pronunciation": "muh-dah-swee shee beh-zhik"
+            },
+            {
+                "anishinaabemowin": "mdaaswi-shi-niizh",
+                "english": "twelve",
+                "pronunciation": "muh-dah-swee shee neezh"
+            },
+            {
+                "anishinaabemowin": "mdaaswi-shi-nswi",
+                "english": "thirteen",
+                "pronunciation": "muh-dah-swee shee ns-wee"
+            },
+            {
+                "anishinaabemowin": "mdaaswi-shi-niiwin",
+                "english": "fourteen",
+                "pronunciation": "muh-dah-swee shee nee-win"
+            },
+            {
+                "anishinaabemowin": "mdaaswi-shi-naanan",
+                "english": "fifteen",
+                "pronunciation": "muh-dah-swee shee nah-nahn"
+            },
+            {
+                "anishinaabemowin": "mdaaswi-shi-ngodwaaswi",
+                "english": "sixteen",
+                "pronunciation": "muh-dah-swee shee ngoh-dwah-swee"
+            },
+            {
+                "anishinaabemowin": "mdaaswi-shi-niizhwaaswi",
+                "english": "seventeen",
+                "pronunciation": "muh-dah-swee shee neezh-wah-swee"
+            },
+            {
+                "anishinaabemowin": "mdaaswi-shi-nshwaaswi",
+                "english": "eighteen",
+                "pronunciation": "muh-dah-swee shee nsh-wah-swee"
+            },
+            {
+                "anishinaabemowin": "mdaaswi-shi-zhaangswi",
+                "english": "nineteen",
+                "pronunciation": "muh-dah-swee shee zhahng-swee"
+            },
+            {
+                "anishinaabemowin": "niizhtana",
+                "english": "twenty",
+                "pronunciation": "neezh-tah-nah"
+            }
+        ]
+    },
+{
+        "name": "Relatives",
+        "description": "Terms for family members in Anishinaabemowin",
+        "is_public": true,
+        "cards": [
+            {
+                "anishinaabemowin": "nindoodem",
+                "english": "my clan",
+                "pronunciation": "nin-doh-dem"
+            },
+            {
+                "anishinaabemowin": "nimishoomis",
+                "english": "my grandfather",
+                "pronunciation": "nih-mih-shoh-mis"
+            },
+            {
+                "anishinaabemowin": "nookomis",
+                "english": "my grandmother",
+                "pronunciation": "noh-koh-mis"
+            },
+            {
+                "anishinaabemowin": "nindede",
+                "english": "my father",
+                "pronunciation": "nin-deh-deh"
+            },
+            {
+                "anishinaabemowin": "ningashi",
+                "english": "my mother",
+                "pronunciation": "nin-gah-shee"
+            },
+            {
+                "anishinaabemowin": "ninimoshenh",
+                "english": "my uncle",
+                "pronunciation": "nih-nih-moh-shehn"
+            },
+            {
+                "anishinaabemowin": "ninzigos",
+                "english": "my aunt",
+                "pronunciation": "nin-zih-gohs"
+            },
+            {
+                "anishinaabemowin": "ninzhishenh",
+                "english": "my older brother",
+                "pronunciation": "nin-zhih-shehn"
+            },
+            {
+                "anishinaabemowin": "nishiimenh",
+                "english": "my younger sibling",
+                "pronunciation": "nih-shee-mehn"
+            },
+            {
+                "anishinaabemowin": "nindaanis",
+                "english": "my daughter",
+                "pronunciation": "nin-dah-nis"
+            },
+            {
+                "anishinaabemowin": "nindaanis",
+                "english": "my son",
+                "pronunciation": "nin-dah-nis"
+            },
+            {
+                "anishinaabemowin": "nindawemaa",
+                "english": "my relative",
+                "pronunciation": "nin-dah-weh-mah"
+            },
+            {
+                "anishinaabemowin": "ninimoshenh",
+                "english": "my cousin",
+                "pronunciation": "nih-nih-moh-shehn"
+            },
+            {
+                "anishinaabemowin": "nindinawemaaganag",
+                "english": "my relatives",
+                "pronunciation": "nin-dih-nah-weh-mah-gah-nahg"
+            },
+            {
+                "anishinaabemowin": "ninimoshenh",
+                "english": "my friend",
+                "pronunciation": "nih-nih-moh-shehn"
+            },
+            {
+                "anishinaabemowin": "nindinawemaagan",
+                "english": "my family",
+                "pronunciation": "nin-dih-nah-weh-mah-gahn"
+            },
+            {
+                "anishinaabemowin": "nindinawemaaganag",
+                "english": "my siblings",
+                "pronunciation": "nin-dih-nah-weh-mah-gah-nahg"
+            },
+            {
+                "anishinaabemowin": "nindinawemaaganag",
+                "english": "my cousins",
+                "pronunciation": "nin-dih-nah-weh-mah-gah-nahg"
+            },
+            {
+                "anishinaabemowin": "nindinawemaaganag",
+                "english": "my grandparents",
+                "pronunciation": "nin-dih-nah-weh-mah-gah-nahg"
+            },
+            {
+                "anishinaabemowin": "nindinawemaaganag",
+                "english": "my grandchildren",
+                "pronunciation": "nin-dih-nah-weh-mah-gah-nahg"
+            }
+        ]
+    },
+    {
+            "name": "Colors",
+            "description": "Names of colors in Anishinaabemowin",
+            "is_public": true,
+            "cards": [
+                {
+                    "anishinaabemowin": "miskwaa",
+                    "english": "red",
+                    "pronunciation": "miss-kwah"
+                },
+                {
+                    "anishinaabemowin": "ozaawaa",
+                    "english": "yellow",
+                    "pronunciation": "oh-zah-wah"
+                },
+                {
+                    "anishinaabemowin": "ozhaawashkwaa",
+                    "english": "blue",
+                    "pronunciation": "oh-zhah-wash-kwah"
+                },
+                {
+                    "anishinaabemowin": "ozhaawashko",
+                    "english": "green",
+                    "pronunciation": "oh-zhah-wash-koh"
+                },
+                {
+                    "anishinaabemowin": "waabishkaa",
+                    "english": "white",
+                    "pronunciation": "wah-bish-kah"
+                },
+                {
+                    "anishinaabemowin": "makadewaa",
+                    "english": "black",
+                    "pronunciation": "muh-kah-day-wah"
+                },
+                {
+                    "anishinaabemowin": "ozaawaa",
+                    "english": "brown",
+                    "pronunciation": "oh-zah-wah"
+                },
+                {
+                    "anishinaabemowin": "waabishkaa-miskwaa",
+                    "english": "pink",
+                    "pronunciation": "wah-bish-kah miss-kwah"
+                },
+                {
+                    "anishinaabemowin": "makadewaa-ozhaawashkwaa",
+                    "english": "purple",
+                    "pronunciation": "muh-kah-day-wah oh-zhah-wash-kwah"
+                },
+                {
+                    "anishinaabemowin": "waabishkaa-ozaawaa",
+                    "english": "orange",
+                    "pronunciation": "wah-bish-kah oh-zah-wah"
+                },
+                {
+                    "anishinaabemowin": "makadewaa-waabishkaa",
+                    "english": "gray",
+                    "pronunciation": "muh-kah-day-wah wah-bish-kah"
+                },
+                {
+                    "anishinaabemowin": "makadewaa-miskwaa",
+                    "english": "maroon",
+                    "pronunciation": "muh-kah-day-wah miss-kwah"
+                },
+                {
+                    "anishinaabemowin": "ozhaawashko-waabishkaa",
+                    "english": "light green",
+                    "pronunciation": "oh-zhah-wash-koh wah-bish-kah"
+                },
+                {
+                    "anishinaabemowin": "ozhaawashkwaa-makadewaa",
+                    "english": "dark blue",
+                    "pronunciation": "oh-zhah-wash-kwah muh-kah-day-wah"
+                },
+                {
+                    "anishinaabemowin": "waabishkaa-ozhaawashkwaa",
+                    "english": "light blue",
+                    "pronunciation": "wah-bish-kah oh-zhah-wash-kwah"
+                },
+                {
+                    "anishinaabemowin": "miskwaa-makadewaa",
+                    "english": "dark red",
+                    "pronunciation": "miss-kwah muh-kah-day-wah"
+                },
+                {
+                    "anishinaabemowin": "ozaawaa-waabishkaa",
+                    "english": "light yellow",
+                    "pronunciation": "oh-zah-wah wah-bish-kah"
+                },
+                {
+                    "anishinaabemowin": "makadewaa-ozaawaa",
+                    "english": "dark brown",
+                    "pronunciation": "muh-kah-day-wah oh-zah-wah"
+                },
+                {
+                    "anishinaabemowin": "waabishkaa-makadewaa",
+                    "english": "light gray",
+                    "pronunciation": "wah-bish-kah muh-kah-day-wah"
+                },
+                {
+                    "anishinaabemowin": "ozhaawashko-miskwaa",
+                    "english": "teal",
+                    "pronunciation": "oh-zhah-wash-koh miss-kwah"
+                }
+            ]
+        },
+
+    {
+            "name": "Food",
+            "description": "Common food items in Anishinaabemowin",
+            "is_public": true,
+            "cards": [
+                {
+                    "anishinaabemowin": "miijim",
+                    "english": "food",
+                    "pronunciation": "mee-jim"
+                },
+                {
+                    "anishinaabemowin": "mandaamin",
+                    "english": "corn",
+                    "pronunciation": "mahn-dah-min"
+                },
+                {
+                    "anishinaabemowin": "ode'imin",
+                    "english": "strawberry",
+                    "pronunciation": "oh-day-ih-min"
+                },
+                {
+                    "anishinaabemowin": "mishiimin",
+                    "english": "apple",
+                    "pronunciation": "mih-shee-ih-min"
+                },
+                {
+                    "anishinaabemowin": "zhiiwaagamizigan",
+                    "english": "maple syrup",
+                    "pronunciation": "zhee-wah-gah-mih-zih-gahn"
+                },
+                {
+                    "anishinaabemowin": "bagesaan",
+                    "english": "bread",
+                    "pronunciation": "bah-geh-sahn"
+                },
+                {
+                    "anishinaabemowin": "gaa-wiiyaas",
+                    "english": "meat",
+                    "pronunciation": "gah-wee-yahs"
+                },
+                {
+                    "anishinaabemowin": "giigoonh",
+                    "english": "fish",
+                    "pronunciation": "gee-goonh"
+                },
+                {
+                    "anishinaabemowin": "wiiyaas",
+                    "english": "meat",
+                    "pronunciation": "wee-yahs"
+                },
+                {
+                    "anishinaabemowin": "miskomin",
+                    "english": "raspberry",
+                    "pronunciation": "mih-skoh-min"
+                },
+                {
+                    "anishinaabemowin": "ozaawimin",
+                    "english": "cherry",
+                    "pronunciation": "oh-zah-wih-min"
+                },
+                {
+                    "anishinaabemowin": "makade-mashkikiwaaboo",
+                    "english": "coffee",
+                    "pronunciation": "muh-kah-day mahsh-kih-kee-wah-boo"
+                },
+                {
+                    "anishinaabemowin": "niibiishaaboo",
+                    "english": "tea",
+                    "pronunciation": "nee-bee-shah-boo"
+                },
+                {
+                    "anishinaabemowin": "bimide",
+                    "english": "butter",
+                    "pronunciation": "bih-mih-day"
+                },
+                {
+                    "anishinaabemowin": "gookoosh-wiiyaas",
+                    "english": "pork",
+                    "pronunciation": "goh-kohsh wee-yahs"
+                },
+                {
+                    "anishinaabemowin": "waawaashkeshi-wiiyaas",
+                    "english": "venison",
+                    "pronunciation": "wah-wahsh-keh-shee wee-yahs"
+                },
+                {
+                    "anishinaabemowin": "mishiiminabo",
+                    "english": "apple juice",
+                    "pronunciation": "mih-shee-ih-min-ah-boh"
+                },
+                {
+                    "anishinaabemowin": "ziinzibaakwad",
+                    "english": "sugar",
+                    "pronunciation": "zeen-zih-bah-kwahd"
+                },
+                {
+                    "anishinaabemowin": "doodooshaaboo",
+                    "english": "milk",
+                    "pronunciation": "doh-doh-shah-boo"
+                },
+                {
+                    "anishinaabemowin": "adoopowin",
+                    "english": "table",
+                    "pronunciation": "ah-doh-poh-win"
+                }
+            ]
+        },
+
+    {
+            "name": "Animals",
+            "description": "Names of animals in Anishinaabemowin",
+            "is_public": true,
+            "cards": [
+                {
+                    "anishinaabemowin": "makwa",
+                    "english": "bear",
+                    "pronunciation": "muh-kwah"
+                },
+                {
+                    "anishinaabemowin": "ajidamoo",
+                    "english": "squirrel",
+                    "pronunciation": "ah-jih-dah-moo"
+                },
+                {
+                    "anishinaabemowin": "waawaashkeshi",
+                    "english": "deer",
+                    "pronunciation": "wah-wahsh-keh-shee"
+                },
+                {
+                    "anishinaabemowin": "ma'iingan",
+                    "english": "wolf",
+                    "pronunciation": "mah-een-gahn"
+                },
+                {
+                    "anishinaabemowin": "gaazhagens",
+                    "english": "cat",
+                    "pronunciation": "gah-zhah-gehnz"
+                },
+                {
+                    "anishinaabemowin": "animosh",
+                    "english": "dog",
+                    "pronunciation": "ah-nih-mohsh"
+                },
+                {
+                    "anishinaabemowin": "nimkii",
+                    "english": "thunderbird",
+                    "pronunciation": "nihm-kee"
+                },
+                {
+                    "anishinaabemowin": "migizi",
+                    "english": "eagle",
+                    "pronunciation": "mih-gih-zee"
+                },
+                {
+                    "anishinaabemowin": "gookooko'oo",
+                    "english": "owl",
+                    "pronunciation": "goh-koh-koh-oh"
+                },
+                {
+                    "anishinaabemowin": "name",
+                    "english": "sturgeon",
+                    "pronunciation": "nah-meh"
+                },
+                {
+                    "anishinaabemowin": "makade zhigaag",
+                    "english": "skunk",
+                    "pronunciation": "muh-kah-deh zhih-gahg"
+                },
+                {
+                    "anishinaabemowin": "adik",
+                    "english": "caribou",
+                    "pronunciation": "ah-dihk"
+                },
+                {
+                    "anishinaabemowin": "mishiike",
+                    "english": "turtle",
+                    "pronunciation": "mih-shee-keh"
+                },
+                {
+                    "anishinaabemowin": "waabooz",
+                    "english": "rabbit",
+                    "pronunciation": "wah-bohz"
+                },
+                {
+                    "anishinaabemowin": "mashkode bizhiki",
+                    "english": "buffalo",
+                    "pronunciation": "muh-shkoh-deh bih-zhih-kee"
+                },
+                {
+                    "anishinaabemowin": "zhiishiib",
+                    "english": "duck",
+                    "pronunciation": "zhee-sheeb"
+                },
+                {
+                    "anishinaabemowin": "maanameg",
+                    "english": "rainbow trout",
+                    "pronunciation": "mah-nah-mehg"
+                },
+                {
+                    "anishinaabemowin": "zhiigaag",
+                    "english": "weasel",
+                    "pronunciation": "zhih-gahg"
+                },
+                {
+                    "anishinaabemowin": "wazhashk",
+                    "english": "muskrat",
+                    "pronunciation": "wah-zhahshk"
+                },
+                {
+                    "anishinaabemowin": "ogimaa giizhik",
+                    "english": "kingfisher",
+                    "pronunciation": "oh-gih-mah gee-zhihk"
+                }
+            ]
+        },
+
+    {
+            "name": "Greetings",
+            "description": "Common greetings in Anishinaabemowin",
+            "is_public": true,
+            "cards": [
+                {
+                    "anishinaabemowin": "boozhoo",
+                    "english": "hello",
+                    "pronunciation": "boh-zhoo"
+                },
+                {
+                    "anishinaabemowin": "aaniin",
+                    "english": "hi",
+                    "pronunciation": "ah-neen"
+                },
+                {
+                    "anishinaabemowin": "mino giizhigad",
+                    "english": "good day",
+                    "pronunciation": "mih-noh gee-zhih-gahd"
+                },
+                {
+                    "anishinaabemowin": "mino dibikad",
+                    "english": "good evening",
+                    "pronunciation": "mih-noh dih-bih-kahd"
+                },
+                {
+                    "anishinaabemowin": "mino gizhigan",
+                    "english": "good morning",
+                    "pronunciation": "mih-noh gih-zhi-gahn"
+                },
+                {
+                    "anishinaabemowin": "giga-waabamin",
+                    "english": "see you",
+                    "pronunciation": "gih-gah wah-bah-min"
+                },
+                {
+                    "anishinaabemowin": "giga-waabamin miinawaa",
+                    "english": "see you again",
+                    "pronunciation": "gih-gah wah-bah-min mee-nah-wah"
+                },
+                {
+                    "anishinaabemowin": "miigwech",
+                    "english": "thank you",
+                    "pronunciation": "mee-gwetch"
+                },
+                {
+                    "anishinaabemowin": "gaawiin",
+                    "english": "no",
+                    "pronunciation": "gah-ween"
+                },
+                {
+                    "anishinaabemowin": "eya",
+                    "english": "yes",
+                    "pronunciation": "eh-yah"
+                },
+                {
+                    "anishinaabemowin": "awenen?",
+                    "english": "who?",
+                    "pronunciation": "ah-weh-nehn"
+                },
+                {
+                    "anishinaabemowin": "aaniin ezhi-ayaayan?",
+                    "english": "how are you?",
+                    "pronunciation": "ah-neen eh-zhee ah-yah-yahn"
+                },
+                {
+                    "anishinaabemowin": "nimino-ayaa",
+                    "english": "i am fine",
+                    "pronunciation": "nih-mih-noh ah-yah"
+                },
+                {
+                    "anishinaabemowin": "baamaa pii",
+                    "english": "later",
+                    "pronunciation": "bah-mah pee"
+                },
+                {
+                    "anishinaabemowin": "biindigen",
+                    "english": "come in",
+                    "pronunciation": "been-dih-gehn"
+                },
+                {
+                    "anishinaabemowin": "giin",
+                    "english": "you",
+                    "pronunciation": "geen"
+                },
+                {
+                    "anishinaabemowin": "nin",
+                    "english": "me",
+                    "pronunciation": "nin"
+                },
+                {
+                    "anishinaabemowin": "gawii wii-zegisii",
+                    "english": "don't worry",
+                    "pronunciation": "gah-wee wee-zeh-gih-see"
+                },
+                {
+                    "anishinaabemowin": "bangii eta go",
+                    "english": "just a little",
+                    "pronunciation": "bahng-gee eh-tah goh"
+                },
+                {
+                    "anishinaabemowin": "baa maa pii miinawaa",
+                    "english": "goodbye again",
+                    "pronunciation": "bah-mah pee mee-nah-wah"
+                }
+            ]
+        },
+
+    {
+            "name": "Months",
+            "description": "The 12 months of the year in Anishinaabemowin",
+            "is_public": true,
+            "cards": [
+                {
+                    "anishinaabemowin": "gichi-bibooni-giizis",
+                    "english": "great winter moon (january)",
+                    "pronunciation": "gih-chee bih-boh-nee gee-zis"
+                },
+                {
+                    "anishinaabemowin": "namebini-giizis",
+                    "english": "sucker fish moon (february)",
+                    "pronunciation": "nah-meh-bih-nee gee-zis"
+                },
+                {
+                    "anishinaabemowin": "onaabani-giizis",
+                    "english": "crust on the snow moon (march)",
+                    "pronunciation": "oh-nah-bah-nee gee-zis"
+                },
+                {
+                    "anishinaabemowin": "iskigamizige-giizis",
+                    "english": "maple sap boiling moon (april)",
+                    "pronunciation": "iss-kih-gah-mih-zih-geh gee-zis"
+                },
+                {
+                    "anishinaabemowin": "waabigwani-giizis",
+                    "english": "flower moon (may)",
+                    "pronunciation": "wah-bih-gwah-nee gee-zis"
+                },
+                {
+                    "anishinaabemowin": "ode'imini-giizis",
+                    "english": "strawberry moon (june)",
+                    "pronunciation": "oh-deh-ih-mih-nee gee-zis"
+                },
+                {
+                    "anishinaabemowin": "miini-giizis",
+                    "english": "blueberry moon (july)",
+                    "pronunciation": "mee-nih gee-zis"
+                },
+                {
+                    "anishinaabemowin": "manoominike-giizis",
+                    "english": "ricing moon (august)",
+                    "pronunciation": "mah-noh-mih-nih-keh gee-zis"
+                },
+                {
+                    "anishinaabemowin": "waatebagaa-giizis",
+                    "english": "leaves turning moon (september)",
+                    "pronunciation": "wah-teh-bah-gah gee-zis"
+                },
+                {
+                    "anishinaabemowin": "binaakwe-giizis",
+                    "english": "falling leaves moon (october)",
+                    "pronunciation": "bih-nah-kweh gee-zis"
+                },
+                {
+                    "anishinaabemowin": "gashkadino-giizis",
+                    "english": "freezing moon (november)",
+                    "pronunciation": "gash-kah-dih-noh gee-zis"
+                },
+                {
+                    "anishinaabemowin": "manidoo-giizisoons",
+                    "english": "little spirit moon (december)",
+                    "pronunciation": "mah-nih-doh gee-zih-soons"
+                }
+            ]
+        },
+
+    {
+            "name": "Weather",
+            "description": "Common weather terms in Anishinaabemowin",
+            "is_public": true,
+            "cards": [
+                {
+                    "anishinaabemowin": "gizhaate",
+                    "english": "it's hot",
+                    "pronunciation": "gih-zhaa-teh"
+                },
+                {
+                    "anishinaabemowin": "dakaayaa",
+                    "english": "it's cool",
+                    "pronunciation": "dah-kah-yah"
+                },
+                {
+                    "anishinaabemowin": "gimiwan",
+                    "english": "it's raining",
+                    "pronunciation": "gih-mih-wahn"
+                },
+                {
+                    "anishinaabemowin": "zoogipon",
+                    "english": "it's snowing",
+                    "pronunciation": "zoh-gih-pohn"
+                },
+                {
+                    "anishinaabemowin": "noodin",
+                    "english": "it's windy",
+                    "pronunciation": "noh-din"
+                },
+                {
+                    "anishinaabemowin": "mizhakwad",
+                    "english": "it's clear (weather)",
+                    "pronunciation": "mih-zhah-kwahd"
+                },
+                {
+                    "anishinaabemowin": "ningwaanakwad",
+                    "english": "it's cloudy",
+                    "pronunciation": "ning-wah-nah-kwahd"
+                },
+                {
+                    "anishinaabemowin": "awan",
+                    "english": "it's foggy",
+                    "pronunciation": "ah-wahn"
+                },
+                {
+                    "anishinaabemowin": "dakibiisaa",
+                    "english": "it's a cold rain",
+                    "pronunciation": "dah-kih-bih-sah"
+                },
+                {
+                    "anishinaabemowin": "bagamibiisaa",
+                    "english": "rain is arriving",
+                    "pronunciation": "bah-gah-mih-bih-sah"
+                },
+                {
+                    "anishinaabemowin": "mamaangaashkaa",
+                    "english": "there are big waves",
+                    "pronunciation": "mah-mah-ahn-gahsh-kah"
+                },
+                {
+                    "anishinaabemowin": "maji-giizhigad",
+                    "english": "it's a bad day (weather-wise)",
+                    "pronunciation": "mah-jee gih-zhih-gahd"
+                },
+                {
+                    "anishinaabemowin": "dakaanimad",
+                    "english": "there's a cold wind",
+                    "pronunciation": "dah-kah-nih-mahd"
+                },
+                {
+                    "anishinaabemowin": "aabawaate",
+                    "english": "it's mild and sunny",
+                    "pronunciation": "ah-bah-wah-teh"
+                },
+                {
+                    "anishinaabemowin": "aabawaa",
+                    "english": "it's warm/mild",
+                    "pronunciation": "ah-bah-wah"
+                },
+                {
+                    "anishinaabemowin": "awanibiisaan",
+                    "english": "it's misty rain",
+                    "pronunciation": "ah-wah-nih-bih-sahn"
+                },
+                {
+                    "anishinaabemowin": "animikiikaa",
+                    "english": "there's a thunderstorm",
+                    "pronunciation": "ah-nih-mih-kee-kah"
+                },
+                {
+                    "anishinaabemowin": "waasese",
+                    "english": "it's lightning",
+                    "pronunciation": "wah-seh-seh"
+                },
+                {
+                    "anishinaabemowin": "aaniin ezhiwebag agwajiing?",
+                    "english": "what's the weather like outside?",
+                    "pronunciation": "ah-neen eh-zhih-weh-bahg ah-gwah-jeeng"
+                },
+                {
+                    "anishinaabemowin": "gizhaate noongom giizhigak",
+                    "english": "it's hot today",
+                    "pronunciation": "gih-zhah-teh noh-ngohm gih-zhih-gahk"
+                }
+            ]
+        }
+]

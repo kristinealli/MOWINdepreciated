@@ -1,0 +1,52 @@
+{% extends 'cards/base.html' %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <!-- Deck Header -->
+        <div class="mb-6">
+            <h1 class="title is-2 has-text-centered gowun-dodum-regular">{{ deck.name }}</h1>
+            {% if deck.description %}
+            <p class="subtitle is-5 has-text-centered gowun-dodum-regular">{{ deck.description }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="columns is-multiline">
+            {% for card in cards %}
+            <div class="column is-one-quarter">
+                <div class="card hover-shadow has-text-centered" style="height: 300px;">
+                    <div class="card-content" style="height: 100%; padding: 1.5rem; display: flex; flex-direction: column;">
+                        <!-- Top Section (1/3 height) -->
+                        <div style="height: 200px; display: flex; flex-direction: column; justify-content: center;">
+                            <!-- Anishinaabemowin (Primary Word) -->
+                            <h3 class="title is-4 mb-2">{{ card.anishinaabemowin }}</h3>
+                            
+                            <!-- Pronunciation if available -->
+                            {% if card.pronunciation %}
+                            <p class="is-size-6 has-text-grey">[{{ card.pronunciation }}]</p>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Divider -->
+                        <hr style="background-color: #dbdbdb; height: 1px; margin: 0;">
+                        
+                        <!-- Bottom Section (remaining height) -->
+                        <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center;">
+                            <p class="is-size-5">{{ card.english }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if not cards %}
+        <div class="notification is-info is-light">
+            <p class="has-text-centered gowun-dodum-regular">No cards in this deck yet.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %} 

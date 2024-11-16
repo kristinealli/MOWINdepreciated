@@ -1,0 +1,45 @@
+{% extends 'cards/base.html' %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 class="title is-2 has-text-centered mb-6 gowun-dodum-regular">Available Decks</h1>
+
+        {% if decks %}
+            <div class="columns is-multiline">
+                {% for deck in decks %}
+                <div class="column is-one-third">
+                    <div class="card h-100 hover-shadow">
+                        <div class="card-content">
+                            <!-- Deck Name -->
+                            <h2 class="title is-4 mb-3 gowun-dodum-regular">
+                                <a href="{% url 'cards-in-deck' pk=deck.id %}" class="has-text-primary">
+                                    {{ deck.name }}
+                                </a>
+                            </h2>
+
+                            <!-- Description -->
+                            <div class="content gowun-dodum-regular">
+                                {% if deck.description %}
+                                <p>{{ deck.description }}</p>
+                                {% else %}
+                                <p class="has-text-grey-light">No description available</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if forloop.counter|divisibleby:3 %}
+                </div><div class="columns is-multiline">
+                {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="notification is-info is-light">
+                <p class="has-text-centered gowun-dodum-regular">No decks available yet.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %} 

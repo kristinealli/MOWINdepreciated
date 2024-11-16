@@ -1,39 +1,74 @@
 from django import forms
-from .models import Card
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from .models import Card, Profile, Deck
 
 class CardCheckForm(forms.Form):
     card_id = forms.IntegerField(required=True)
     solved = forms.BooleanField(required=False)
 
-class FileUploadForm(forms.Form):
-    file = forms.FileField(label="Upload Deck", required=True)
-    deck_name = forms.CharField(max_length=255, required=True)  
-    
 class CardForm(forms.ModelForm):
-    new_subject = forms.CharField(
-        required=False,
-        label="Or enter a new deck name",
-        widget=forms.TextInput(attrs={"placeholder": "New Deck Name"})
+    class Meta:
+        model = Card
+        fields = [
+            'anishinaabemowin',
+            'english',
+            'pronunciation',
+            'subject'
+        ]
+        widgets = {
+            'anishinaabemowin': forms.TextInput(attrs={'class': 'form-control'}),
+            'english': forms.TextInput(attrs={'class': 'form-control'}),
+            'pronunciation': forms.TextInput(attrs={'class': 'form-control'}),
+            'subject': forms.TextInput(attrs={'class': 'form-control'})
+        }
+
+class ProfileForm(forms.ModelForm):
+    decks_in_curriculum = forms.ModelMultipleChoiceField(
+        queryset=Deck.objects.all(),
+        widget=forms.SelectMultiple(attrs={
+            'class': 'form-control',
+            'multiple': True
+        }),
+        label="Select Your Decks",
+        required=False
     )
 
     class Meta:
-        model = Card
-        fields = ["anishinaabemowin", "english", "subject"]
+        model = Profile
+        fields = [
+            'preferred_name',
+            'decks_in_curriculum'
+        ]
+        widgets = {
+            'preferred_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter your preferred name'
+            }),
+        }
 
-    def __init__(self, *args, **kwargs):
-        current_subject = kwargs.pop('current_subject', None)
-        super().__init__(*args, **kwargs)
+class FileUploadForm(forms.Form):
+    file = forms.FileField(
+        label='Select a CSV file',
+        help_text='Max. 42 megabytes',
+        widget=forms.FileInput(attrs={'class': 'form-control'})
+    )
+
+    def clean_file(self):
+        file = self.cleaned_data['file']
+        if file:
+            if not file.name.endswith('.csv'):
+                raise forms.ValidationError('File must be a CSV')
+            if file.size > 42 * 1024 * 1024:  # 42MB limit
+                raise forms.ValidationError('File size must be under 42MB')
+        return file
+
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(required=False)
+    
+    class Meta:
+        model = User
+        fields = ("username", "email", "password1", "password2")
         
-        # Set the dropdown of subjects, with the current subject as the first option
-        self.fields["subject"].queryset = Card.objects.values_list('subject', flat=True).distinct()
-        self.fields["subject"].initial = current_subject
-        self.fields["subject"].required = False
 
-    def clean_subject(self):
-        subject = self.cleaned_data.get("subject")
-        new_subject = self.cleaned_data.get("new_subject")
-
-        # Use the new subject if provided
-        if new_subject:
-            return new_subject
-        return subject
+        

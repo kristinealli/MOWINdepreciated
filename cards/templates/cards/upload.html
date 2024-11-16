@@ -1,36 +1,114 @@
 {% extends "cards/base.html" %}
 
 {% block content %}
-    <section class="section">
-        <div class="container">
-            <h1 class="title">Upload Deck</h1>
-            <form method="post" enctype="multipart/form-data">
-                <p>This is the upload template.</p>
-                {% csrf_token %}
+<section class="section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-half">
+                <div class="box">
+                    <h1 class="title has-text-centered gowun-dodum-regular">Upload Deck</h1>
+                    
+                    <!-- Success/Error Messages -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="notification {% if message.tags %}is-{{ message.tags }}{% endif %}">
+                                <button class="delete"></button>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
 
-                <!-- Deck Name Field -->
-                <div class="field">
-                    {{ form.deck_name.label_tag }}
-                    <div class="control">
-                        {{ form.deck_name }}
-                    </div>
-                </div>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
 
-                <!-- File Upload Field -->
-                <div class="field">
-                    {{ form.file.label_tag }}
-                    <div class="control">
-                        {{ form.file }}
-                    </div>
-                </div>
+                        <!-- Deck Name Field -->
+                        <div class="field">
+                            <label class="label gowun-dodum-regular">{{ form.deck_name.label }}</label>
+                            <div class="control">
+                                {{ form.deck_name }}
+                            </div>
+                            {% if form.deck_name.errors %}
+                                <p class="help is-danger gowun-dodum-regular">{{ form.deck_name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
 
-                <!-- Submit Button -->
-                <div class="field">
-                    <div class="control">
-                        <button type="submit" class="button is-primary">Upload</button>
-                    </div>
+                        <!-- File Upload Field -->
+                        <div class="field">
+                            <label class="label gowun-dodum-regular">{{ form.file.label }}</label>
+                            <div class="control">
+                                <div class="file has-name is-fullwidth">
+                                    <label class="file-label">
+                                        <input class="file-input" type="file" name="{{ form.file.name }}" 
+                                               accept=".csv,.xlsx,.xls">
+                                        <span class="file-cta">
+                                            <span class="file-icon">
+                                                <i class="fas fa-upload"></i>
+                                            </span>
+                                            <span class="file-label gowun-dodum-regular">
+                                                Choose a file...
+                                            </span>
+                                        </span>
+                                        <span class="file-name gowun-dodum-regular">
+                                            No file selected
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            {% if form.file.errors %}
+                                <p class="help is-danger gowun-dodum-regular">{{ form.file.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- File Format Help -->
+                        <div class="notification is-info is-light mt-4">
+                            <h4 class="is-size-6 gowun-dodum-regular mb-2">File Format Requirements:</h4>
+                            <ul class="gowun-dodum-regular">
+                                <li>• Accepted formats: CSV, Excel (.xlsx, .xls)</li>
+                                <li>• Required columns: anishinaabemowin, english</li>
+                                <li>• Optional columns: pronunciation, subject</li>
+                            </ul>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="field mt-5">
+                            <div class="control has-text-centered">
+                                <button type="submit" class="button is-primary is-medium gowun-dodum-regular">
+                                    <span class="icon">
+                                        <i class="fas fa-upload"></i>
+                                    </span>
+                                    <span>Upload Deck</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
-    </section>
+    </div>
+</section>
+
+<!-- JavaScript for file input handling -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // File input handling
+    const fileInput = document.querySelector('input[type=file]');
+    const fileName = document.querySelector('.file-name');
+    
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) {
+            fileName.textContent = fileInput.files[0].name;
+        } else {
+            fileName.textContent = 'No file selected';
+        }
+    });
+
+    // Notification dismissal
+    const deleteButtons = document.querySelectorAll('.notification .delete');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            button.parentElement.remove();
+        });
+    });
+});
+</script>
 {% endblock %}

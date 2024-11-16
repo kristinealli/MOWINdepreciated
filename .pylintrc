@@ -1,0 +1,24 @@
+[MASTER]
+ignore= 
+    migrations, 
+    __pycache__,
+    settings.py  # Optional, to avoid checking settings files
+
+[MESSAGES CONTROL]
+# Disable Django-specific warnings you may want to ignore:
+disable=
+    missing-docstring,
+    too-few-public-methods,  # Useful to ignore if many classes are small
+    no-member,  # Django ORM throws false positives here
+
+
+[FORMAT]
+max-line-length=120  
+
+[DESIGN]
+max-args=10  # Allow up to 10 arguments in functions, useful for Django views
+max-attributes=15  # Adjust based on your preference
+
+[REPORTS]
+output-format=colorized
+reports=no  # To simplify output

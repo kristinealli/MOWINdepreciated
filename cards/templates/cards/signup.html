@@ -1,0 +1,57 @@
+{% extends "cards/base.html" %}
+
+{% block content %}
+<section class="hero is-fullheight-with-navbar">
+    <div class="hero-body">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-half">
+                    <div class="box has-text-centered p-6">
+                        <h2 class="title is-2 mb-6 gowun-dodum-regular">Sign Up</h2>
+                        
+                        <form method="post" class="form">
+                            {% csrf_token %}
+                            
+                            {% for field in form %}
+                            <div class="field">
+                                <label class="label gowun-dodum-regular">{{ field.label }}</label>
+                                <div class="control">
+                                    {% if field.errors %}
+                                        <div class="notification is-danger is-light">
+                                            {{ field.errors }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="{% if field.errors %}has-text-danger{% endif %}">
+                                        {{ field }}
+                                    </div>
+                                </div>
+                                {% if field.help_text %}
+                                    <p class="help gowun-dodum-regular">{{ field.help_text|safe }}</p>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                            <div class="field mt-5">
+                                <div class="control">
+                                    <button class="button is-primary is-medium is-fullwidth is-rounded has-shadow gowun-dodum-regular" type="submit">
+                                        <span class="icon">
+                                            <i class="fas fa-user-plus"></i>
+                                        </span>
+                                        <span>Sign Up</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="has-text-centered mt-4">
+                                <p class="gowun-dodum-regular">
+                                    Already have an account? 
+                                    <a href="{% url 'login' %}" class="has-text-primary">Login here</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

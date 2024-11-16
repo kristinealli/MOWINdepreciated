@@ -1,0 +1,65 @@
+{% extends "cards/base.html" %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 class="title">My Curriculum</h1>
+        
+        <!-- Current Curriculum -->
+        <div class="box">
+            <h2 class="subtitle">Selected Decks</h2>
+            {% if decks %}
+                {% for deck in decks %}
+                <div class="columns is-vcentered mb-2">
+                    <div class="column">
+                        <h3 class="title is-5">{{ deck.name }}</h3>
+                        <p class="subtitle is-6">{{ deck.description }}</p>
+                    </div>
+                    <div class="column is-narrow">
+                        <form method="POST" action="{% url 'remove-from-curriculum' deck.id %}">
+                            {% csrf_token %}
+                            <button class="button is-danger is-outlined">
+                                <span class="icon">
+                                    <i class="fas fa-minus"></i>
+                                </span>
+                                <span>Remove</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No decks in your curriculum yet.</p>
+            {% endif %}
+        </div>
+
+        <!-- Available Decks -->
+        <div class="box">
+            <h2 class="subtitle">Available Decks</h2>
+            {% if available_decks %}
+                {% for deck in available_decks %}
+                <div class="columns is-vcentered mb-2">
+                    <div class="column">
+                        <h3 class="title is-5">{{ deck.name }}</h3>
+                        <p class="subtitle is-6">{{ deck.description }}</p>
+                    </div>
+                    <div class="column is-narrow">
+                        <form method="POST" action="{% url 'add-to-curriculum' deck.id %}">
+                            {% csrf_token %}
+                            <button class="button is-primary is-outlined">
+                                <span class="icon">
+                                    <i class="fas fa-plus"></i>
+                                </span>
+                                <span>Add to Curriculum</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No additional decks available.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %} 

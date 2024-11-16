@@ -2,10 +2,18 @@
 {% load humanize %}
 
 {% block content %}
-    <h2>🗃 {{ box_number | ordinal }} Box</h2>
-    <mark>{{ object_list | length }} </mark> Card{{ object_list | pluralize }} left in box.
-    <hr>
-    {% if check_card %}
-        {% include "cards/card.html" with card=check_card %}
-    {% endif %}
+    <section class="section">
+        <div class="container">
+            <h2 class="title has-text-centered gowun-dodum-regular">🗃 {{ box_number | ordinal }} Box</h2>
+            <p class="has-text-centered">
+                <mark>{{ object_list | length }} </mark> Card{{ object_list | pluralize }} left in box.
+            </p>
+            <hr>
+            {% if check_card %}
+                <div class="box">
+                    {% include "cards/card.html" with card=check_card %}
+                </div>
+            {% endif %}
+        </div>
+    </section>
 {% endblock content %}

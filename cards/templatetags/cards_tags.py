@@ -1,19 +1,25 @@
 from django import template
-from cards.models import BOXES, Card
+from django.db.models import Count
+from cards.models import UserCardProgress
 
 register = template.Library()
 
 @register.inclusion_tag("cards/box_links.html")
 def boxes_as_links():
-    boxes = []
-    for box_num in BOXES:
-        card_count = Card.objects.filter(box=box_num).count()
-        boxes.append({
-            "number": box_num,
-            "card_count": card_count,
-        })
-
-    return {"boxes": boxes}
+    """
+    Returns box counts for the current user's cards
+    """
+    boxes = UserCardProgress.objects.values('box_level').annotate(
+        card_count=Count('id')
+    ).order_by('box_level')
+    
+    return {"boxes": [
+        {
+            "number": box["box_level"],
+            "card_count": box["card_count"],
+        }
+        for box in boxes
+    ]}
 
 @register.filter
 def ordinal(value):
@@ -26,3 +32,15 @@ def ordinal(value):
         return f"{value}{suffix}"
     except (TypeError, ValueError):
         return value
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
+
+@register.filter
+def multiply(value, arg):
+    return float(value) * float(arg)
+
+@register.filter
+def to_int(value):
+    return int(value)
