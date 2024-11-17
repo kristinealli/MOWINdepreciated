@@ -64,11 +64,24 @@ class FileUploadForm(forms.Form):
         return file
 
 class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=False)
+    preferred_name = forms.CharField(
+        label='Preferred Name',
+        max_length=100, 
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'input',
+            'placeholder': 'What should we call you?'
+        })
+    )
     
     class Meta:
         model = User
-        fields = ("username", "email", "password1", "password2")
-        
+        fields = ('username', 'preferred_name', 'password1', 'password2')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+      
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'input'
 
         

@@ -35,7 +35,7 @@ from datetime import timedelta
 
 # Local imports
 from cards.models import Card, Deck, UserDeck, UserCardProgress, Profile, DeckShare
-from .forms import CardCheckForm, FileUploadForm, CardForm, ProfileForm
+from .forms import FileUploadForm, CardForm, ProfileForm, CustomUserCreationForm
 
 
 # Utility Functions
@@ -59,22 +59,18 @@ class AboutView(TemplateView):
     template_name = "cards/about.html"
 
 class SignUpView(CreateView):
-    """Handle user registration using Django's built-in UserCreationForm."""
-    form_class = UserCreationForm
+    """Handle user registration with custom form including preferred name."""
+    form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'cards/signup.html'
 
     def form_valid(self, form):
         response = super().form_valid(form)
         user = form.save()
-
-        # Get the profile that was automatically created by the signal
-        profile = user.profile
-
-        # Update profile with optional fields
-        profile.bio = self.request.POST.get('bio', '')
-        profile.location = self.request.POST.get('location', '')
-        profile.save()
+        
+        # Update profile with preferred name from form
+        user.profile.preferred_name = form.cleaned_data.get('preferred_name')
+        user.profile.save()
 
         messages.success(self.request, 'Account created successfully! Please login.')
         return response
@@ -618,13 +614,13 @@ def get_user_decks(user):
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('profile-setup')
+            return redirect('dashboard' )
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
     return render(request, 'cards/signup.html', {'form': form})
 
 @login_required
