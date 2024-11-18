@@ -4,6 +4,15 @@
 <div class="container">
     <h1 class="title is-2 gowun-dodum-regular">Studying: {{ deck.name }}</h1>
     
+    <div class="mb-5">
+        <a href="{% url 'dashboard' %}" class="button is-link gowun-dodum-regular">
+            <span class="icon">
+                <i class="fas fa-arrow-left"></i>
+            </span>
+            <span>Back to Dashboard</span>
+        </a>
+    </div>
+    
     {% if current_card %}
         <div class="card">
             <div class="card-content">

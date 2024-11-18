@@ -12,11 +12,36 @@
                     <div class="card h-100 hover-shadow">
                         <div class="card-content">
                             <!-- Deck Name -->
-                            <h2 class="title is-4 mb-3 gowun-dodum-regular">
-                                <a href="{% url 'cards-in-deck' pk=deck.id %}" class="has-text-primary">
-                                    {{ deck.name }}
-                                </a>
-                            </h2>
+                            <div class="is-flex is-justify-content-space-between is-align-items-start">
+                                <h2 class="title is-4 mb-3 gowun-dodum-regular">
+                                    <a href="{% url 'cards-in-deck' pk=deck.id %}" class="has-text-primary">
+                                        {{ deck.name }}
+                                    </a>
+                                </h2>
+                                
+                                {% if show_add_buttons %}
+                                    {% if deck not in user.profile.chosen_decks.all %}
+                                        <form method="POST" action="{% url 'add-to-curriculum' deck.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" 
+                                                    class="button is-small is-primary is-light gowun-dodum-regular"
+                                                    title="Add to My Decks">
+                                                <span class="icon">
+                                                    <i class="fas fa-plus"></i>
+                                                </span>
+                                                <span>Add</span>
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        <span class="tag is-success is-light gowun-dodum-regular">
+                                            <span class="icon">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                            <span>Added</span>
+                                        </span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
 
                             <!-- Description -->
                             <div class="content gowun-dodum-regular">

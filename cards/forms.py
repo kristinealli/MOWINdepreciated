@@ -24,22 +24,9 @@ class CardForm(forms.ModelForm):
         }
 
 class ProfileForm(forms.ModelForm):
-    decks_in_curriculum = forms.ModelMultipleChoiceField(
-        queryset=Deck.objects.all(),
-        widget=forms.SelectMultiple(attrs={
-            'class': 'form-control',
-            'multiple': True
-        }),
-        label="Select Your Decks",
-        required=False
-    )
-
     class Meta:
         model = Profile
-        fields = [
-            'preferred_name',
-            'decks_in_curriculum'
-        ]
+        fields = ['preferred_name']
         widgets = {
             'preferred_name': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -76,12 +63,21 @@ class CustomUserCreationForm(UserCreationForm):
     
     class Meta:
         model = User
-        fields = ('username', 'preferred_name', 'password1', 'password2')
+        fields = ('username', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-      
         for field in self.fields.values():
             field.widget.attrs['class'] = 'input'
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+            # Get or create the user's profile and set preferred_name
+            profile = user.profile  # This works if you have the signal set up
+            profile.preferred_name = self.cleaned_data.get('preferred_name')
+            profile.save()
+        return user
 
         

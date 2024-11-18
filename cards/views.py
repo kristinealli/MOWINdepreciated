@@ -31,6 +31,8 @@ from django.db.models import Q, OuterRef, Count, Sum
 from django.contrib.auth.models import User  
 from django.db import models 
 from datetime import timedelta
+from django.core.cache import cache
+from django.db.models import Count, Q, Prefetch
 
 
 # Local imports
@@ -83,9 +85,20 @@ class DeckListView(LoginRequiredMixin, ListView):
     context_object_name = 'decks'
 
     def get_queryset(self):
-        return Deck.objects.filter(
-            Q(owner=self.request.user) | Q(is_public=True)
-        ).order_by('name')
+        # Check if we're showing new decks only
+        if self.request.GET.get('filter') == 'new':
+            # Show decks not in user's chosen_decks
+            return Deck.objects.exclude(
+                id__in=self.request.user.profile.chosen_decks.values_list('id', flat=True)
+            )
+        # Show all decks
+        return Deck.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add flag to indicate if we're showing new decks
+        context['show_add_buttons'] = self.request.GET.get('filter') == 'new'
+        return context
 
 class UserDeckListView(LoginRequiredMixin, ListView):
     """Display a list of all decks added to the user's curriculum."""
@@ -121,9 +134,30 @@ def curriculum_view(request):
 def add_to_curriculum(request, pk):
     deck = get_object_or_404(Deck, pk=pk)
     if request.method == 'POST':
+        # Add deck to user's curriculum
         request.user.profile.chosen_decks.add(deck)
+        
+        # Create initial progress entries for all cards in this deck
+        cards = deck.cards.all()
+        now = timezone.now()
+        
+        # Bulk create progress entries for each card
+        UserCardProgress.objects.bulk_create([
+            UserCardProgress(
+                user=request.user,
+                card=card,
+                box_level=1,  # All new cards start in box 1
+                next_review_date=now,  # Due immediately
+            ) for card in cards
+        ], ignore_conflicts=True)  # Ignore if entries already exist
+        
         messages.success(request, f'"{deck.name}" has been added to your curriculum.')
-    return redirect('curriculum')  # Now this will work
+        
+        # Clear dashboard cache to ensure updated counts are shown
+        cache_key = f'user_dashboard_{request.user.id}'
+        cache.delete(cache_key)
+        
+    return redirect('dashboard')
 
 @login_required
 def remove_from_curriculum(request, pk):
@@ -497,26 +531,23 @@ def study_session(request, deck_pk):
         5: timezone.timedelta(days=30),     # Box 5: Monthly
     }
 
-    # Get cards due for review based on their box level and next review date
+    # First, create progress for new cards
+    new_cards = deck.cards.exclude(usercardprogress__user=request.user)
+    for card in new_cards:
+        UserCardProgress.objects.create(
+            user=request.user,
+            card=card,
+            box_level=1,
+            next_review_date=timezone.now()
+        )
+
+    # Then, get all due cards (including newly created ones)
     due_cards = UserCardProgress.objects.filter(
         user=request.user,
         card__deck=deck,
         next_review_date__lte=timezone.now()
     ).order_by('box_level', 'next_review_date')
 
-    # For new cards, create progress records in Box 1
-    new_cards = deck.cards.exclude(
-        usercardprogress__user=request.user
-    )
-    for card in new_cards:
-        UserCardProgress.objects.create(
-            user=request.user,
-            card=card,
-            box_level=1,  # Start in Box 1
-            next_review_date=timezone.now()  # Due immediately
-        )
-
-    # Get current card to study
     current_card = None
     if due_cards.exists():
         current_progress = due_cards[0]
@@ -777,252 +808,185 @@ def study_deck(request, deck_pk):
 def upload_cards(request, deck_pk):
     deck = get_object_or_404(Deck, pk=deck_pk)
 
-    # Check if user has permission to modify this deck
-    if deck.owner != request.user:
-        messages.error(request, 'You do not have permission to modify this deck.')
-        return redirect('deck-detail', pk=deck_pk)
+    # Verify user has access to this deck
+    if not request.user.profile.chosen_decks.filter(id=deck.id).exists():
+        messages.error(request, "This deck is not in your curriculum.")
+        return redirect('curriculum')
 
     if request.method == 'POST':
-        form = FileUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            file = request.FILES['file']
-            try:
-                # Process CSV file
-                decoded_file = file.read().decode('utf-8').splitlines()
-                reader = csv.DictReader(decoded_file)
-                for row in reader:
-                    Card.objects.create(
-                        deck=deck,  # Add this to associate card with deck
-                        anishinaabemowin=row['anishinaabemowin'],
-                        english=row['english'],
-                        pronunciation=row.get('pronunciation', ''),
-                        subject=row.get('subject', deck.name)  # Default to deck name if not provided
-                    )
-                messages.success(request, f'Cards successfully uploaded to {deck.name}!')
-                return redirect('deck-detail', pk=deck_pk)
-            except (csv.Error, UnicodeDecodeError, KeyError) as e:
-                messages.error(request, f'Error processing file: {str(e)}')
-    else:
-        form = FileUploadForm()
+        try:
+            # Get JSON data from textarea
+            json_data = request.POST.get('json_data')
+            if not json_data:
+                messages.error(request, "Please provide JSON data.")
+                return redirect('upload-cards', deck_pk=deck_pk)
 
-    return render(request, 'cards/upload_cards.html', {
-        'form': form,
+            # Parse JSON data
+            data = json.loads(json_data)
+            
+            # Track statistics for success message
+            cards_created = 0
+            categories_processed = 0
+
+            # Handle both single category and array of categories
+            if isinstance(data, dict):
+                data = [data]  # Convert single category to list
+
+            for category in data:
+                # Update deck with category information if it matches
+                if deck.name == category.get('name'):
+                    deck.description = category.get('description', deck.description)
+                    deck.is_public = category.get('is_public', deck.is_public)
+                    deck.save()
+
+                # Process cards in the category
+                cards = category.get('cards', [])
+                for card_data in cards:
+                    # Validate required fields
+                    if not all(key in card_data for key in ['anishinaabemowin', 'english']):
+                        continue
+
+                    # Create the card
+                    Card.objects.create(
+                        deck=deck,
+                        anishinaabemowin=card_data['anishinaabemowin'],
+                        english=card_data['english'],
+                        pronunciation=card_data.get('pronunciation', ''),
+                        subject=deck.name  # Always use deck name for consistency
+                    )
+                    cards_created += 1
+                categories_processed += 1
+
+            if cards_created > 0:
+                messages.success(
+                    request,
+                    f'Successfully created {cards_created} cards in {deck.name}!'
+                )
+            else:
+                messages.warning(
+                    request,
+                    'No cards were created. Please check your JSON format and ensure required fields are present.'
+                )
+            return redirect('deck-detail', pk=deck_pk)
+
+        except json.JSONDecodeError as e:
+            messages.error(request, f'Invalid JSON format: {str(e)}')
+        except Exception as e:
+            messages.error(request, f'Error processing data: {str(e)}')
+
+    # Render the upload template, not deck-list
+    return render(request, 'cards/upload.html', {
         'deck': deck
     })
 
 @login_required
 def dashboard(request):
-
-    # Get user's decks with progress
-    user_decks = request.user.profile.chosen_decks.all().annotate(
-        total_cards=models.Count('cards'),
-        mastered_cards=models.Count(
-            'cards',
-            filter=models.Q(
-                usercardprogress__user=request.user,
-                usercardprogress__box_level=5  # Box 5 represents mastered cards
-            )
-        ),
-        cards_due=models.Count(
-            'cards',
-            filter=models.Q(
-                usercardprogress__user=request.user,
-                usercardprogress__next_review_date__lte=timezone.now()
-            )
-        ),
-        last_reviewed=models.Max('usercardprogress__last_reviewed')
-    ).order_by('-date_created')
-
-    # Count cards due for review
-    cards_due = UserCardProgress.objects.filter(
-        user=request.user,
-        next_review_date__lte=timezone.now()
-    ).count()
-
-    # Get first deck with due cards
-    first_due_deck = None
-    if cards_due > 0:
-        first_due_progress = UserCardProgress.objects.filter(
-            user=request.user,
-            next_review_date__lte=timezone.now()
-        ).first()
-        if first_due_progress:
-            first_due_deck = first_due_progress.card.decks.first()
-
-    # Today's stats
-    today_reviews_count = UserCardProgress.objects.filter(
-        user=request.user,
-        last_reviewed__date=timezone.now().date()
-    ).count()
+    user = request.user
+    cache_key = f'dashboard_data_{user.id}'
     
-    # Calculate today's accuracy using box_level changes instead
-    today_correct_reviews = UserCardProgress.objects.filter(
-        user=request.user,
-        last_reviewed__date=timezone.now().date(),
-        last_review_result=True  # Use the boolean field that tracks if the review was correct
-    ).count()
+    # Clear cache for testing
+    cache.delete(cache_key)
     
-    today_accuracy = (today_correct_reviews / today_reviews_count * 100) if today_reviews_count > 0 else 0
-    
-    # Shared decks
-    shared_decks = DeckShare.objects.filter(
-        shared_with=request.user,
-        active=True
-    ).select_related('deck')[:5]
+    dashboard_data = cache.get(cache_key)
+    if not dashboard_data:
+        # Use consistent timestamp throughout
+        now = timezone.now()
+        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
 
-    # Box distribution
-    box5_cards = get_box_count(request.user, 5)
-    box4_cards = get_box_count(request.user, 4)
-    box3_cards = get_box_count(request.user, 3)
-    box2_cards = get_box_count(request.user, 2)
-    box1_cards = get_box_count(request.user, 1)
-    total_cards = box5_cards + box4_cards + box3_cards + box2_cards + box1_cards
+        # Get user's decks
+        user_decks = user.profile.chosen_decks.all()
+        
+        # Set first_login in session
+        if 'first_login' not in request.session:
+            request.session['first_login'] = True
+        else:
+            request.session['first_login'] = False
 
-    context = {
-        'user_decks': user_decks,
-        'cards_due': cards_due,
-        'first_due_deck': first_due_deck,
+        # Get all progress records for the user's decks with a single query
+        progress_records = UserCardProgress.objects.filter(
+            user=user,
+            card__deck__in=user_decks
+        ).select_related('card__deck')  # Optimize related lookups
         
-        # Today's stats
-        'today_reviews_count': today_reviews_count,
-        
-        'today_accuracy': today_accuracy,
-        
-        # Shared decks
-        'shared_decks': shared_decks,
+        # Get due cards
+        due_cards = progress_records.filter(next_review_date__lte=now)
+        cards_due = due_cards.count()
+        first_due_progress = due_cards.select_related('card__deck').first()
+
+        # Calculate total box distribution
+        total_box_distribution = {box: 0 for box in range(1, 6)}
+        for box_level in range(1, 6):
+            total_box_distribution[box_level] = progress_records.filter(
+                box_level=box_level
+            ).count()
+
+        # Get deck statistics with optimized queries
+        user_deck_stats = []
+        for deck in user_decks:
+            # Filter progress records for this deck (reuse existing queryset)
+            deck_progress = progress_records.filter(card__deck=deck)
             
-        # Box distribution
-        'box5_cards': box5_cards,
-        'box4_cards': box4_cards,
-        'box3_cards': box3_cards,
-        'box2_cards': box2_cards,
-        'total_cards': total_cards,
-    }
+            total_cards = deck.cards.count()
+            cards_studied = deck_progress.count()
+            progress = round((cards_studied / total_cards * 100) if total_cards > 0 else 0)
+            
+            # Calculate box distribution
+            box_distribution = {
+                box: deck_progress.filter(box_level=box).count()
+                for box in range(1, 6)
+            }
+            
+            mastered_cards = box_distribution[4] + box_distribution[5]
+            mastery_level = round((mastered_cards / total_cards * 100) if total_cards > 0 else 0)
+            
+            # Calculate due cards for this deck
+            due_cards_count = deck_progress.filter(next_review_date__lte=now).count()
 
-    return render(request, 'cards/dashboard.html', context)
+            user_deck_stats.append({
+                'deck': deck,
+                'progress': progress,
+                'mastery_level': mastery_level,
+                'due_cards': due_cards_count,
+                'box_distribution': box_distribution,
+                'total_cards': total_cards,
+                'cards_studied': cards_studied
+            })
 
-@login_required
-def dashboard(request):
-    # Get user's decks and shared decks
-    user_decks = request.user.profile.chosen_decks.all()
-    shared_decks = DeckShare.objects.filter(shared_with=request.user)
-
-    # Set the start of today (midnight)
-    today_start = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
-
-    # Get all reviews done today
-    today_reviews = UserCardProgress.objects.filter(
-        user=request.user,
-        last_reviewed__gte=today_start  # greater than or equal to midnight today
-    )
-
-    # Count total reviews today
-    today_reviews_count = today_reviews.count()
-
-    # Count correct reviews today
-    today_correct = today_reviews.filter(last_review_result=True).count()
-
-    # Calculate accuracy percentage
-    # If there are reviews, calculate (correct/total * 100), otherwise return 0
-    today_accuracy = round((today_correct / today_reviews_count * 100) if today_reviews_count > 0 else 0)
-
-    # Get due cards based on Leitner system
-    due_cards = UserCardProgress.objects.filter(
-        user=request.user,
-        next_review_date__lte=timezone.now()
-    ).select_related('card__deck').order_by('box_level', 'next_review_date')
-
-    first_due_progress = due_cards.first()
-    cards_due = due_cards.count()
-
-    # Get deck statistics with Leitner box distribution
-    user_deck_stats = []  # Renamed from deck_stats
-    for deck in user_decks:
-        # Get progress for this deck
-        deck_progress = UserCardProgress.objects.filter(
-            user=request.user,
-            card__deck=deck
-        )
-        
-        # Calculate deck statistics
-        total_cards = deck.cards.count()
-        cards_studied = deck_progress.count()
-        progress = round((cards_studied / total_cards * 100) if total_cards > 0 else 0)
-        
-        # Calculate box distribution
-        box_distribution = {
-            1: deck_progress.filter(box_level=1).count(),
-            2: deck_progress.filter(box_level=2).count(),
-            3: deck_progress.filter(box_level=3).count(),
-            4: deck_progress.filter(box_level=4).count(),
-            5: deck_progress.filter(box_level=5).count(),
+        dashboard_data = {
+            'user_decks': user_deck_stats,
+            'today_reviews_count': progress_records.filter(
+                last_reviewed__gte=today_start
+            ).count(),
+            'today_accuracy': round(
+                (
+                    progress_records.filter(
+                        last_reviewed__gte=today_start,
+                        last_review_result=True
+                    ).count() /
+                    progress_records.filter(
+                        last_reviewed__gte=today_start
+                    ).count() * 100
+                ) if progress_records.filter(
+                    last_reviewed__gte=today_start
+                ).exists() else 0
+            ),
+            'cards_due': cards_due,  # Total due cards across all decks
+            'first_due_deck': first_due_progress.card.deck if first_due_progress else None,
+            'total_box_distribution': total_box_distribution,
+            'box_levels': {
+                1: 'Daily',
+                2: '3 Days',
+                3: 'Weekly',
+                4: 'Biweekly',
+                5: 'Monthly'
+            }
         }
         
-        # Calculate mastery (cards in boxes 4 and 5)
-        mastered_cards = box_distribution[4] + box_distribution[5]
-        mastery_level = round((mastered_cards / total_cards * 100) if total_cards > 0 else 0)
-        
-        # Get due cards for this deck
-        due_cards_count = deck_progress.filter(
-            next_review_date__lte=timezone.now()
-        ).count()
+        # Cache for 5 minutes
+        cache.set(cache_key, dashboard_data, 300)
 
-        user_deck_stats.append({
-            'deck': deck,
-            'progress': progress,
-            'mastery_level': mastery_level,
-            'due_cards_count': due_cards_count,
-            'box_distribution': box_distribution,
-            'total_cards': total_cards,
-            'cards_studied': cards_studied
-        })
+    return render(request, 'cards/dashboard.html', dashboard_data)
 
-    context = {
-        'user_decks': user_deck_stats,
-        'shared_decks': shared_decks,
-        'today_reviews_count': today_reviews_count,
-        'today_accuracy': today_accuracy,
-        'cards_due': cards_due,
-        'has_due_cards': first_due_progress is not None,
-        'first_due_deck': first_due_progress.card.deck if first_due_progress else None,
-        'box_levels': {
-            1: "Learning",
-            2: "Review (1 day)",
-            3: "Review (3 days)",
-            4: "Review (1 week)",
-            5: "Mastered (2 weeks)"
-        }
-    }
-    
-        # Calculate total box distribution across all decks
-    total_box_distribution = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
-    
-    # Get all progress records for the user
-    progress_records = UserCardProgress.objects.filter(user=request.user)
-    
-    # Count cards in each box
-    for box_level in range(1, 6):
-        total_box_distribution[box_level] = progress_records.filter(
-            box_level=box_level
-        ).count()
-    
-    # Calculate total cards
-    total_cards = sum(total_box_distribution.values())
-    
-    context.update({
-        'total_box_distribution': total_box_distribution,
-        'total_cards': total_cards,
-        'box_levels': {
-            1: 'Daily',
-            2: '3 Days',
-            3: 'Weekly',
-            4: 'Biweekly',
-            5: 'Monthly'
-        }
-    })
-    
-    return render(request, 'cards/dashboard.html', context)
-    
 @login_required
 def profile_redirect(request):
     return redirect('profile-detail', username=request.user.username)
@@ -1044,36 +1008,63 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = Profile
     form_class = ProfileForm
     template_name = 'cards/profile_form.html'
+    success_url = reverse_lazy('dashboard')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        # Check what changed and create appropriate message
+        if 'preferred_name' in form.changed_data:
+            new_name = form.cleaned_data['preferred_name']
+            if new_name:
+                messages.success(self.request, f'Your preferred name has been updated to "{new_name}".')
+            else:
+                messages.success(self.request, 'Your preferred name has been removed.')
+        return response
 
     def get_object(self, queryset=None):
         return self.request.user.profile
-
-    def get_success_url(self):
-        return reverse_lazy('profile-detail', kwargs={'username': self.request.user.username})
-
-class ProfileDetailView(LoginRequiredMixin, DetailView):
-    model = User
-    template_name = 'cards/profile.html'
-    context_object_name = 'profile_user'
-
-    def get_object(self, queryset=None):
-        return self.request.user
-
-def get_box_count(user, box_level):
-    """
-    Get the count of cards in a specific box level for a user.
-    
-    Args:
-        user: The user to check
-        box_level: The box level to count (1-5)
         
-    Returns:
-        int: Number of cards in the specified box
-    """
-    return UserCardProgress.objects.filter(
-        user=user,
-        box_level=box_level
-    ).count()
+class ProfileDetailView(LoginRequiredMixin, View):
+    template_name = 'cards/profile.html'
+
+    def get(self, request):
+        context = {
+            'user': request.user,
+            'profile': request.user.profile,
+            'form': ProfileForm(instance=request.user.profile),
+            'total_cards': UserCardProgress.objects.filter(user=request.user).count(),
+            'box_levels': range(1, 6),
+            'progress_by_box': {
+                box: UserCardProgress.objects.filter(
+                    user=request.user,
+                    box_level=box
+                ).count() for box in range(1, 6)
+            }
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your profile has been updated!')
+            return redirect('dashboard')
+        
+        # If form is invalid, re-render with errors
+        context = {
+            'user': request.user,
+            'profile': request.user.profile,
+            'form': form,
+            'total_cards': UserCardProgress.objects.filter(user=request.user).count(),
+            'box_levels': range(1, 6),
+            'progress_by_box': {
+                box: UserCardProgress.objects.filter(
+                    user=request.user,
+                    box_level=box
+                ).count() for box in range(1, 6)
+            }
+        }
+        return render(request, self.template_name, context)
 
 class ProfileSetupView(LoginRequiredMixin, CreateView):
     model = Profile

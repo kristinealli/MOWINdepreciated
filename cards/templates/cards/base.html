@@ -8,6 +8,7 @@
         <title>Mowin - Anishinaabemowin Vocabulary</title>
         <link rel="stylesheet" href="{% static 'bulma.css' %}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@creativebulma/bulma-tooltip@1.2.0/dist/bulma-tooltip.min.css">
         
     </head>
 
@@ -35,7 +36,6 @@
                                 {% if user.is_authenticated %}
                                     <a class="navbar-item gowun-dodum-regular" href="{% url 'profile' %}">Profile</a>
                                     <a class="navbar-item gowun-dodum-regular" href="{% url 'deck-list' %}">Card Decks</a>
-                                    <a class="navbar-item gowun-dodum-regular" href="{% url 'cards-upload' %}">Upload Deck</a>
                                     <a class="navbar-item is-active gowun-dodum-regular" href="{% url 'logout' %}">Logout</a>
                                 {% else %}
                                     <a class="navbar-item gowun-dodum-regular" href="{% url 'login' %}">Login</a>
@@ -65,14 +65,31 @@
             </div>
         </main>
         
-        {% if user.is_authenticated %}
-            {% include "cards/logged_in_footer.html" %}
-        {% endif %}
+
         
         <p class="has-text-centered has-text-grey-lighter gowun-dodum-regular is-size-6 mt-2">
             Created by Mnidoo Asiniinsag 2024 
         </p>
         
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get all "navbar-burger" elements
+            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+            // Add a click event on each of them
+            $navbarBurgers.forEach(el => {
+                el.addEventListener('click', () => {
+                    // Get the target from the "data-target" attribute
+                    const target = el.dataset.target;
+                    const $target = document.getElementById(target);
+
+                    // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+                    el.classList.toggle('is-active');
+                    $target.classList.toggle('is-active');
+                });
+            });
+        });
+    </script>
     </body>
 
 </html>
