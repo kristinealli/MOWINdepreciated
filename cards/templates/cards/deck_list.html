@@ -1,16 +1,24 @@
 {% extends 'cards/base.html' %}
 
 {% block content %}
+<style>
+    @media screen and (min-width: 769px) {
+        .deck-card {
+            height: 160px;
+        }
+    }
+</style>
+
 <section class="section">
     <div class="container">
         <h1 class="title is-2 has-text-centered mb-6 gowun-dodum-regular">Available Decks</h1>
 
         {% if decks %}
-            <div class="columns is-multiline">
+            <div class="columns is-multiline is-align-items-stretch">
                 {% for deck in decks %}
                 <div class="column is-one-third">
                     <div class="card h-100 hover-shadow">
-                        <div class="card-content">
+                        <div class="card-content deck-card">
                             <!-- Deck Name -->
                             <div class="is-flex is-justify-content-space-between is-align-items-start">
                                 <h2 class="title is-4 mb-3 gowun-dodum-regular">

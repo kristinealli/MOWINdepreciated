@@ -1,7 +1,9 @@
-import json
-from cards.models import Card, Deck
 import os
 import django
+
+import json
+from cards.models import Card, Deck
+
 
 # Set up Django environment
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project.settings')  # Replace 'your_project' with your project name

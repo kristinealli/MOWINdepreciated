@@ -1,114 +1,151 @@
-{% extends "cards/base.html" %}
-{% load cards_tags %}
-
-{% block content %}
+{% extends "cards/base.html" %} {% load cards_tags %} {% block content %}
 <section class="section">
-    <div class="container">
-        <div class="columns is-centered">
-            <div class="column is-three-quarters">
-                <div class="box has-background-black">
-                    <h1 class="title has-text-centered gowun-dodum-regular has-text-primary">Profile</h1>
-                    
-                    <!-- Basic User Information -->
-                    <div class="box  mb-5">
-                        <h2 class="subtitle has-text-primary gowun-dodum-regular">Basic Information</h2>
-                        <div class="columns">
-                            <div class="column">
-                                <p class="gowun-dodum-regular"><strong>Username:</strong> {{ user.username }}</p>
-                                <p class="gowun-dodum-regular"><strong>Preferred Name:</strong> {{ profile.preferred_name|default:"Not set" }}</p>
-                                <p class="gowun-dodum-regular"><strong>Date Joined:</strong> {{ user.date_joined|date:"F j, Y" }}</p>
-                                <p class="gowun-dodum-regular"><strong>Last Login:</strong> {{ user.last_login|date:"F j, Y H:i" }}</p>
-                            </div>
-                        </div>
-                    </div>
+	<div class="container">
+		<div class="columns is-centered">
+			<div class="column is-three-quarters">
+				<div class="box has-background-black">
+					<h1
+						class="title has-text-centered gowun-dodum-regular has-text-primary">
+						Profile
+					</h1>
 
-                    <!-- Study Statistics -->
-                    <div class="box  mb-5">
-                        <h2 class="subtitle has-text-primary gowun-dodum-regular">Study Statistics</h2>
-                        <div class="level">
-                            <div class="level-item has-text-centered">
-                                <div>
-                                    <p class="heading gowun-dodum-regular has-text-grey">Study Streak</p>
-                                    <p class="title gowun-dodum-regular has-text-primary">{{ profile.study_streak }}</p>
-                                </div>
-                            </div>
-                            <div class="level-item has-text-centered">
-                                <div>
-                                    <p class="heading gowun-dodum-regular has-text-grey">Cards Studied</p>
-                                    <p class="title gowun-dodum-regular has-text-primary">{{ profile.total_cards_studied }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Curriculum Information -->
-                    <div class="box  mb-5">
-                        <h2 class="subtitle has-text-primary gowun-dodum-regular">Curriculum</h2>
-                        <div class="content">
-                            <h3 class="gowun-dodum-regular">Chosen Decks ({{ profile.chosen_decks.count }})</h3>
-                            <ul>
-                                {% for deck in profile.chosen_decks.all %}
-                                    <li class="gowun-dodum-regular">{{ deck.name }}</li>
-                                {% empty %}
-                                    <li class="gowun-dodum-regular">No decks added to curriculum yet</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-
-                                        <!-- Progress Overview -->
-                    <div class="box  mb-5">
-                        <h2 class="subtitle has-text-primary gowun-dodum-regular">Learning Progress</h2>
-                        <div class="columns is-multiline">
-                            {% for box_level in box_levels %}
-                            <div class="column is-one-fifth">
-                                <div class="has-text-centered">
-                                    <p class="heading gowun-dodum-regular">Box {{ box_level }}</p>
-                                    <p class="title is-4 gowun-dodum-regular has-text-primary">
-                                        {{ progress_by_box|get_item:box_level }}
-                                    </p>
-                                    <p class="subtitle is-6 gowun-dodum-regular">cards</p>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    <!-- Profile Settings Form -->
-                    <div class="box ">
-                        <h2 class="subtitle has-text-primary gowun-dodum-regular">Update Profile</h2>
-                        <form method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {% for field in form %}
-                                <div class="field">
-                                    <label class="label gowun-dodum-regular has-text-weight-medium">{{ field.label }}</label>
-                                    <div class="control has-icons-left">
-                                        {{ field }}
+                                <!-- Basic User Information -->
+                                <div class="box mb-5">
+                                    <h2 class="subtitle has-text-primary gowun-dodum-regular">
+                                        Basic Information
+                                    </h2>
+                                    <div class="columns">
+                                        <div class="column">
+                                            <p class="gowun-dodum-regular">
+                                                <strong>Username:</strong> {{ user.username }}
+                                            </p>
+                                            <p class="gowun-dodum-regular">
+                                                <strong>Preferred Name:</strong> {{ profile.preferred_name|default:"Not set" }}
+                                            </p>
+                                            <p class="gowun-dodum-regular">
+                                                <strong>Date Joined:</strong> {{ user.date_joined|date:"F j, Y" }}
+                                            </p>
+                                            <p class="gowun-dodum-regular">
+                                                <strong>Last Login:</strong> {{ user.last_login|date:"F j, Y H:i" }}
+                                            </p>
+                                        </div>
                                     </div>
-                                    {% if field.help_text %}
-                                        <p class="help gowun-dodum-regular has-text-grey">{{ field.help_text }}</p>
-                                    {% endif %}
-                                    {% if field.errors %}
-                                        <p class="help is-danger gowun-dodum-regular">{{ field.errors.0 }}</p>
-                                    {% endif %}
                                 </div>
-                            {% endfor %}
-                            
-                            <div class="field mt-6">
-                                <div class="control has-text-centered">
-                                    <button type="submit" class="button is-primary is-medium gowun-dodum-regular has-text-weight-medium is-rounded">
-                                        <span class="icon">
-                                            <i class="fas fa-save"></i>
-                                        </span>
-                                        <span>Update Profile</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
+
+					<!-- Study Statistics -->
+					<div class="box mb-5">
+						<h2
+							class="subtitle has-text-primary gowun-dodum-regular">
+							Study Statistics
+						</h2>
+						<div class="level">
+							<div class="level-item has-text-centered">
+								<div>
+									<p
+										class="heading gowun-dodum-regular has-text-grey">
+										Study Streak
+									</p>
+									<p
+										class="title gowun-dodum-regular has-text-primary">
+										{{ profile.study_streak }}
+									</p>
+								</div>
+							</div>
+							<div class="level-item has-text-centered">
+								<div>
+									<p
+										class="heading gowun-dodum-regular has-text-grey">
+										Cards Studied
+									</p>
+									<p
+										class="title gowun-dodum-regular has-text-primary">
+										{{ profile.total_cards_studied }}
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Curriculum Information -->
+					<div class="box mb-5">
+						<h2
+							class="subtitle has-text-primary gowun-dodum-regular">
+							Curriculum
+						</h2>
+						<div class="content">
+							<h3 class="gowun-dodum-regular">
+								Chosen Decks ({{ profile.chosen_decks.count }})
+							</h3>
+							<ul>
+								{% for deck in profile.chosen_decks.all %}
+								<li class="gowun-dodum-regular">
+									{{ deck.name }}
+								</li>
+								{% empty %}
+								<li class="gowun-dodum-regular">
+									No decks added to curriculum yet
+								</li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+
+					<!-- Progress Overview -->
+					<nav class="level">
+						<div class="level-item has-text-centered">
+							<a href="{% url 'user_progress_log' %}" class="button is-primary">
+								Today's Progress Log
+							</a>
+						</div>
+					</nav>
+
+					<!-- Profile Settings Form -->
+					<div class="box">
+						<h2
+							class="subtitle has-text-primary gowun-dodum-regular">
+							Update Profile
+						</h2>
+						<form method="post" enctype="multipart/form-data">
+							{% csrf_token %} {% for field in form %}
+							<div class="field">
+								<label
+									class="label gowun-dodum-regular has-text-weight-medium"
+									>{{ field.label }}</label
+								>
+								<div class="control has-icons-left">
+									{{ field }}
+								</div>
+								{% if field.help_text %}
+								<p
+									class="help gowun-dodum-regular has-text-grey">
+									{{ field.help_text }}
+								</p>
+								{% endif %} {% if field.errors %}
+								<p class="help is-danger gowun-dodum-regular">
+									{{ field.errors.0 }}
+								</p>
+								{% endif %}
+							</div>
+							{% endfor %}
+
+							<div class="field mt-6">
+								<div class="control has-text-centered">
+									<button
+										type="submit"
+										class="button is-primary is-medium gowun-dodum-regular has-text-weight-medium is-rounded">
+										<span class="icon">
+											<i class="fas fa-save"></i>
+										</span>
+										<span>Update Profile</span>
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>
 {% endblock %}

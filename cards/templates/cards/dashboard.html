@@ -62,15 +62,12 @@
         <div class="columns is-multiline">
             <!-- Today's Progress -->
             <div class="column is-4">
-                <div class="box has-text-centered">
+                <div class="box has-text-centered" title="This shows the number of reviews you have completed today.">
                     <p class="heading gowun-dodum-regular is-size-6">Today's Reviews</p>
                     <p class="title is-2 gowun-dodum-regular has-text-primary">{{ today_reviews_count }}</p>
                     <span class="icon is-large has-text-success">
                         <i class="fas fa-check-circle fa-2x"></i>
                     </span>
-                    {% if today_accuracy %}
-                        <p class="subtitle is-6 gowun-dodum-regular mt-2">{{ today_accuracy }}% Accuracy</p>
-                    {% endif %}
                 </div>
             </div>
 
@@ -118,9 +115,9 @@
                     <div class="columns is-mobile">
                         {% for box, count in total_box_distribution.items %}
                         <div class="column has-text-centered">
-                            <span class="icon has-text-info">
+                            <a href="{% url 'cards_in_box' box %}" class="icon has-tooltip-right has-tooltip-multiline" data-tooltip="View cards in this box.">
                                 <i class="fas fa-layer-group"></i>
-                            </span>
+                            </a>
                             <p class="heading">Box {{ box }}</p>
                             <p class="title is-4">{{ count }}</p>
                             <p class="subtitle is-6">

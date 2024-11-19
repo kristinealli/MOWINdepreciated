@@ -14,7 +14,7 @@ class Card(models.Model):
     anishinaabemowin = models.CharField(max_length=100)
     english = models.CharField(max_length=100)
     pronunciation = models.CharField(max_length=100, blank=True)
-    subject = models.CharField(max_length=100)
+    subject = models.CharField(max_length=100, blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     deck = models.ForeignKey(
         'cards.Deck',
@@ -26,6 +26,11 @@ class Card(models.Model):
     
     def __str__(self) -> str:
         return f"{self.anishinaabemowin} - {self.english}"
+    
+    @property
+    def get_subject(self):
+        """Returns the subject if it exists, otherwise returns the deck name"""
+        return self.subject or self.deck.name
     
 export_models = [Card]
 

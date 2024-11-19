@@ -28,7 +28,18 @@
                     {% endif %}
                 </div>
                 {% endfor %}
-
+                
+                <div class="field has-text-centered mb-5">
+                    <a href="{% url 'password_change' %}" class="gowun-dodum-regular">
+                        <span class="icon-text">
+                            <span class="icon">
+                                <i class="fas fa-key"></i>
+                            </span>
+                            <span>Change Password</span>
+                        </span>
+                    </a>
+                </div>
+                
                 <div class="field is-grouped is-grouped-centered mt-5">
                     <p class="control">
                         <button type="submit" class="button is-success gowun-dodum-regular">
@@ -40,7 +51,7 @@
                     </p>
                     <p class="control">
                         <a href="{% url 'dashboard' %}" 
-                           class="button is-light gowun-dodum-regular">
+                        class="button is-light gowun-dodum-regular">
                             Cancel
                         </a>
                     </p>

@@ -1,0 +1,41 @@
+{% extends "cards/base.html" %} {% load cards_tags %} {% block content %}
+<section class="section">
+	<div class="container">
+		<h2 class="title has-text-primary gowun-dodum-regular">
+			Today's Progress Log
+		</h2>
+		<div class="box">
+    <table class="table is-fullwidth is-hoverable">
+        <thead>
+            <tr>
+                <th>Deck</th>
+                <th>English</th>
+                <th>Status</th>
+                <th>Last Reviewed</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for progress in todays_progress_log %}
+                <tr>
+                    <td class="gowun-dodum-regular">{{ progress.card.deck.name }}</td>
+                    <td class="gowun-dodum-regular">{{ progress.card.english }}</td>
+                    <td class="gowun-dodum-regular">
+                        {% if progress.is_mastered %}
+                            <span class="tag is-success">Mastered</span>
+                        {% else %}
+                            <span class="tag is-warning">Learning</span>
+                        {% endif %}
+                    </td>
+                    <td class="gowun-dodum-regular">{{ progress.last_reviewed|date:"F j, Y H:i" }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4" class="gowun-dodum-regular has-text-centered">No progress made today</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+	</div>
+</section>
+{% endblock %}

@@ -41,6 +41,13 @@
                                     <a class="navbar-item gowun-dodum-regular" href="{% url 'login' %}">Login</a>
                                     <a class="navbar-item gowun-dodum-regular" href="{% url 'signup' %}">Sign Up</a>
                                 {% endif %}
+                                {% if user.is_authenticated %}
+                                    {% if user.is_staff or user.is_superuser %}
+                                        <a href="{% url 'upload-cards' %}" class="navbar-item">
+                                            Upload Cards
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -68,7 +75,7 @@
 
         
         <p class="has-text-centered has-text-grey-lighter gowun-dodum-regular is-size-6 mt-2">
-            Created by Mnidoo Asiniinsag 2024 
+            Mndoo Asiniisag 2024 
         </p>
         
         <script>
