@@ -6,13 +6,21 @@ CACHES = {
     }
 }
 
+import dj_database_url
+import os
+
+# Update the database configuration to use Heroku's DATABASE_URL
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'your_database_name',
-        'USER': 'your_username',
-        'PASSWORD': 'your_password',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 }
+
+# Configure static files for Heroku
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+
+# Simplify static file serving
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Ensure the app is secure
+DEBUG = False
+ALLOWED_HOSTS = ['mowin.herokuapp.com']
