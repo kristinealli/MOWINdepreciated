@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ 'mowin.herokuapp.com']
 
 
 # Application definition
@@ -134,4 +134,21 @@ SOME_PATH = '~/path/to/something'
 SOME_PATH = os.path.expanduser('~/path/to/something')
 # or
 SOME_PATH = '/Users/kristinejohnson/path/to/something'
+
+import os
+import dj_database_url
+import django_heroku
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+
+# Heroku database settings
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
+# Activate Django-Heroku
+django_heroku.settings(locals())
+
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 

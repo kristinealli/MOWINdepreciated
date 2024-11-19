@@ -1,0 +1,30 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Chilanka&family=Gowun+Dodum&family=Miniver&family=Special+Elite&display=swap');
+
+.special-elite-regular {
+    font-family: "Special Elite", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.miniver-regular {
+    font-family: "Miniver", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.gowun-dodum-regular {
+    font-family: "Gowun Dodum", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.chilanka-regular {
+    font-family: "Chilanka", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+:root {
+    font-family: "Gowun Dodum", serif;
+}
