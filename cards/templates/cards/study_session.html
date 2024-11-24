@@ -49,11 +49,11 @@
 			<div id="review-buttons" class="has-text-centered" style="display: none;">
 				<form method="POST">
 					{% csrf_token %}
-					<div class="buttons is-centered mt-4">
-						<button type="submit" name="correct" value="false" class="button is-danger is-medium gowun-dodum-regular">
-							Awee! I need to study this more... 
+					<div class="buttons is-centered mt-4" style="display: flex; justify-content: center;">
+						<button type="submit" name="correct" value="false" class="button is-danger is-medium gowun-dodum-regular" style="flex: 1; margin-right: 10px;">
+							Awee! I need to study this more...
 						</button>
-						<button type="submit" name="correct" value="true" class="button is-success is-medium gowun-dodum-regular">
+						<button type="submit" name="correct" value="true" class="button is-success is-medium gowun-dodum-regular" style="flex: 1;">
 							Aho! I knew this one!
 						</button>
 					</div>
