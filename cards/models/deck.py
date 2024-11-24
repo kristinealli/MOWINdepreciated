@@ -21,7 +21,7 @@ class Deck(models.Model):
         updated_at (datetime): When the deck was last modified
     """
     objects: Manager = models.Manager()
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     is_public = models.BooleanField(default=False)

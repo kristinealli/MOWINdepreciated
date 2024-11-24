@@ -12,19 +12,15 @@ def dashboard(request):
     user = request.user
     profile = user.profile
     now = timezone.now()
-    today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
 
     # Get the user's decks
     user_decks = profile.chosen_decks.all()
-    print(user_decks) 
 
     # Calculate cards due today
     due_cards = []
     for deck in user_decks:
         due_cards.extend(deck.get_due_cards(user))
-    print(due_cards)
     count_due_cards = len(due_cards)
-    print(count_due_cards)
 
     # Aggregate box-level counts
     total_box_distribution = {
@@ -37,6 +33,9 @@ def dashboard(request):
         ))
         for box_level in range(1, 6)
     }
+
+    # Get deck statistics
+    deck_stats = user_deck_stats(request)
 
     # Prepare context data
     context = {
@@ -55,6 +54,7 @@ def dashboard(request):
             5: 'Monthly'
         },
         "first_login": request.session.get("first_login", False),
+        "deck_stats": deck_stats,
     }
 
     return render(request, 'cards/dashboard.html', context)
@@ -107,12 +107,16 @@ def user_deck_stats(request):
     # Get deck statistics
     for deck in user_decks:
         mastery_level = round(deck.get_progress(user))
-        due_cards = deck.get_due_cards(user)
+        
+        # Filter due cards specifically for the current deck
+        due_cards_in_deck = deck.get_due_cards(user).filter(card__deck=deck)
+        count_due_cards_in_deck = due_cards_in_deck.count()
         
         deck_stats.append({
             'deck': deck,
             'mastery_level': mastery_level,
-            'due_cards': due_cards,
+            'due_cards_in_deck': due_cards_in_deck,
+            'count_due_cards_in_deck': count_due_cards_in_deck,
         })
 
     return deck_stats

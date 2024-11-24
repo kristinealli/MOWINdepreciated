@@ -4,29 +4,35 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView, View
+from django.views.generic import UpdateView, View, DetailView
 from cards.forms import ProfileForm
-from cards.models import Profile, UserCardProgress
+from cards.models import Profile, UserCardProgress, Deck
 
 # Profile Views
-class ProfileDetailView(LoginRequiredMixin, View):
+class ProfileDetailView(DetailView):
     template_name = 'cards/profile.html'
+    context_object_name = 'profile'
 
-    def get(self, request):
-        context = {
-            'user': request.user,
-            'profile': request.user.profile,
-            'form': ProfileForm(instance=request.user.profile),
-            'total_cards': UserCardProgress.objects.filter(user=request.user).count(),
-            'box_levels': range(1, 6),
-            'progress_by_box': {
-                box: UserCardProgress.objects.filter(
-                    user=request.user,
-                    box_level=box
-                ).count() for box in range(1, 6)
-            }
-        }
-        return render(request, self.template_name, context)
+    def get_object(self):
+        return self.request.user.profile
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        chosen_decks = user.profile.chosen_decks.all()
+
+        # Filter decks with mastered cards
+        mastered_decks = chosen_decks.filter(
+            cards__usercardprogress__user=user,
+            cards__usercardprogress__card_mastered=True
+        ).distinct()
+
+        # Count the number of mastered decks
+        mastered_decks_count = mastered_decks.count()
+
+        context['mastered_decks'] = mastered_decks
+        context['mastered_decks_count'] = mastered_decks_count
+        return context
 
     def post(self, request):
         form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
@@ -90,3 +96,5 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user.profile
+
+

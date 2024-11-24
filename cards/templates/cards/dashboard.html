@@ -101,33 +101,33 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for deck in user_decks %}
-                                <tr>
-                                    <td class="gowun-dodum-regular">{{ deck.name }}</td>
-                                    <td style="width: 40%;">
-                                        <progress class="progress is-primary is-small" 
-                                                value="{{ deck.mastery_level }}" 
-                                                max="100">
-                                        </progress>
-                                        <span class="is-size-7 gowun-dodum-regular">{{ deck.mastery_level }}%</span>
-                                    </td>
-                                    <td class="gowun-dodum-regular">
-                                        {% if count_due_cards > 0 %}
-                                            <span class="tag is-warning">{{ count_due_cards}}</span>
-                                        {% else %}
-                                            <span class="tag is-success">0</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        <div class="buttons are-small is-flex is-justify-content-center">
-                                            <a href="{% url 'cards-in-deck' pk=deck.pk %}" 
-                                                class="button is-primary is-rounded gowun-dodum-regular">
-                                                <span class="icon"><i class="fas fa-book-open"></i></span>
-                                                <span>View Cards</span>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                {% for deck_stat in deck_stats %}
+                                    <tr>
+                                        <td class="gowun-dodum-regular">{{ deck_stat.deck.name }}</td>
+                                        <td style="width: 40%;">
+                                            <progress class="progress is-primary is-small" 
+                                                    value="{{ deck_stat.mastery_level }}" 
+                                                    max="100">
+                                            </progress>
+                                            <span class="is-size-7 gowun-dodum-regular">{{ deck_stat.mastery_level }}%</span>
+                                        </td>
+                                        <td class="gowun-dodum-regular">
+                                            {% if deck_stat.count_due_cards_in_deck > 0 %}
+                                                <span class="tag is-warning">{{ deck_stat.count_due_cards_in_deck }}</span>
+                                            {% else %}
+                                                <span class="tag is-success">0</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="buttons are-small is-flex is-justify-content-center">
+                                                <a href="{% url 'cards-in-deck' pk=deck_stat.deck.pk %}" 
+                                                    class="button is-primary is-rounded gowun-dodum-regular">
+                                                    <span class="icon"><i class="fas fa-book-open"></i></span>
+                                                    <span>View Cards</span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
@@ -142,8 +142,8 @@
                     <p class="heading gowun-dodum-regular is-size-6">Cards Due Today</p>
                     <p class="title is-2 gowun-dodum-regular has-text-info">{{ count_due_cards }}</p>
                     {% if count_due_cards > 0 %}
-                        <p>Due Cards Count: {{ count_due_cards }}</p>
-                        <p>First Due Card Deck ID: {{ due_cards.0.card.deck.id }}</p>
+                        {% comment %} <p class="gowun-dodum-regular">First Due Card Deck ID: {{ due_cards.0.card.deck.name }}</p>
+                        <p class="gowun-dodum-regular">Cards Due: {{ count_due_cards }}</p> {% endcomment %}
                         <a href="{% url 'study_session' due_cards.0.card.deck.id  %}" 
                             class="button is-primary is-rounded is-medium mt-2 gowun-dodum-regular">
                             <span class="icon"><i class="fas fa-play"></i></span>

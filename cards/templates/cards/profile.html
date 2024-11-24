@@ -33,40 +33,6 @@
                                 </div>
 
 
-					<!-- Study Statistics -->
-					<div class="box mb-5">
-						<h2
-							class="subtitle has-text-primary gowun-dodum-regular">
-							Study Statistics
-						</h2>
-						<div class="level">
-							<div class="level-item has-text-centered">
-								<div>
-									<p
-										class="heading gowun-dodum-regular has-text-grey">
-										Study Streak
-									</p>
-									<p
-										class="title gowun-dodum-regular has-text-primary">
-										{{ profile.study_streak }}
-									</p>
-								</div>
-							</div>
-							<div class="level-item has-text-centered">
-								<div>
-									<p
-										class="heading gowun-dodum-regular has-text-grey">
-										Cards Studied
-									</p>
-									<p
-										class="title gowun-dodum-regular has-text-primary">
-										{{ profile.total_cards_studied }}
-									</p>
-								</div>
-							</div>
-						</div>
-					</div>
-
 					<!-- Curriculum Information -->
 					<div class="box mb-5">
 						<h2
@@ -90,6 +56,29 @@
 							</ul>
 						</div>
 					</div>
+					
+					<!-- Mastered Decks Information -->
+					<div class="box mb-5">
+						<h2 class="subtitle has-text-primary gowun-dodum-regular">
+							Mastered Decks
+						</h2>
+						<div class="content">
+							<h3 class="gowun-dodum-regular">
+								Mastered Decks ({{ mastered_decks_count }})
+							</h3>
+							<ul>
+								{% for deck in mastered_decks %}
+								<li class="gowun-dodum-regular">
+									{{ deck.name }}
+								</li>
+								{% empty %}
+								<li class="gowun-dodum-regular">
+									No decks mastered yet
+								</li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
 
 					<!-- Progress Overview -->
 					<nav class="level">
@@ -100,48 +89,6 @@
 						</div>
 					</nav>
 
-					<!-- Profile Settings Form -->
-					<div class="box">
-						<h2
-							class="subtitle has-text-primary gowun-dodum-regular">
-							Update Profile
-						</h2>
-						<form method="post" enctype="multipart/form-data">
-							{% csrf_token %} {% for field in form %}
-							<div class="field">
-								<label
-									class="label gowun-dodum-regular has-text-weight-medium"
-									>{{ field.label }}</label
-								>
-								<div class="control has-icons-left">
-									{{ field }}
-								</div>
-								{% if field.help_text %}
-								<p
-									class="help gowun-dodum-regular has-text-grey">
-									{{ field.help_text }}
-								</p>
-								{% endif %} {% if field.errors %}
-								<p class="help is-danger gowun-dodum-regular">
-									{{ field.errors.0 }}
-								</p>
-								{% endif %}
-							</div>
-							{% endfor %}
-
-							<div class="field mt-6">
-								<div class="control has-text-centered">
-									<button
-										type="submit"
-										class="button is-primary is-medium gowun-dodum-regular has-text-weight-medium is-rounded">
-										<span class="icon">
-											<i class="fas fa-save"></i>
-										</span>
-										<span>Update Profile</span>
-									</button>
-								</div>
-							</div>
-						</form>
 					</div>
 				</div>
 			</div>
