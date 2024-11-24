@@ -1,17 +1,33 @@
+import dj_database_url
+import os
+from decouple import config
+from flashcards.settings import BASE_DIR
+
+
 LOGIN_REDIRECT_URL = 'dashboard'
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake',
+    'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    'LOCATION': 'unique-snowflake',
     }
 }
 
-import dj_database_url
-import os
+# Load local configuration if it exists`` ``
+try:
+    pass
+except ImportError:
+    DATABASE_URL = config('DATABASE_URL')
+    SECRET_KEY = config('SECRET_KEY')
+    DEBUG = config('DEBUG', default=False, cast=bool)
+    ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
 
-# Update the database configuration to use Heroku's DATABASE_URL
+# Database configuration
 DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    'default': dj_database_url.config(
+        default=DATABASE_URL,
+        conn_max_age=600,
+        sslmode='disable'   # Add this line to disable SSL
+    )
 }
 
 # Configure static files for Heroku

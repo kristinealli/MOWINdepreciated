@@ -1,15 +1,16 @@
+import os 
 from pathlib import Path
-import os
-import dj_database_url
-import django_heroku
+from flashcards.local_settings import DATABASES as local_DATABASES 
+from flashcards.local_settings import SECRET_KEY as secret_key
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
+# Debug settings
 DEBUG = os.getenv('DEBUG', 'False').lower() in ['true', '1', 'yes']
 
-ALLOWED_HOSTS = ['mowin.herokuapp.com']
+# Allowed hosts
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
 INSTALLED_APPS = [
@@ -25,6 +26,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -53,11 +55,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'flashcards.wsgi.application'
 
-# Database
-DATABASES = {
-    'default': {}
-}
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+# Database Configuration
+DATABASES = local_DATABASES 
+
+SECRET_KEY = secret_key 
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -78,6 +79,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'cards/static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# Use Whitenoise for serving static files in production
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -87,5 +91,11 @@ LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'home'
 
-# Activate Django-Heroku
-django_heroku.settings(locals())
+# Caching
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
+

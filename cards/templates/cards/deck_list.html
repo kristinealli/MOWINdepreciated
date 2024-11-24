@@ -29,7 +29,7 @@
                                 
                                 {% if show_add_buttons %}
                                     {% if deck not in user.profile.chosen_decks.all %}
-                                        <form method="POST" action="{% url 'add-to-curriculum' deck.id %}">
+                                        <form method="POST" action="{% url 'add-to-curriculum' deck_id=deck.id %}">
                                             {% csrf_token %}
                                             <button type="submit" 
                                                     class="button is-small is-primary is-light gowun-dodum-regular"

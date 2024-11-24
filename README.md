@@ -6,3 +6,5 @@
    ```
 
 2. Update `local_settings.py` with your database credentials and secret key.
+X
+

@@ -1,12 +1,13 @@
 import os
-import django
 
 import json
+import django
+
 from cards.models import Card, Deck
 
 
 # Set up Django environment
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project.settings')  # Replace 'your_project' with your project name
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'flashcards.settings')  # Replace 'your_project' with your project name
 django.setup()
 
 
@@ -23,7 +24,6 @@ def load_cards_from_json(file_path):
     """
     with open(file_path, 'r', encoding='utf-8') as file:
         data = json.load(file)
-    
     for deck_data in data:
         deck, created = Deck.objects.get_or_create(
             name=deck_data['name'],
@@ -40,7 +40,7 @@ def load_cards_from_json(file_path):
                 anishinaabemowin=card_data['anishinaabemowin'],
                 english=card_data['english'],
                 pronunciation=card_data.get('pronunciation', ''),
-                subject=deck.name,  
+                subject=deck.name,
                 deck=deck
             )
             if card_created:

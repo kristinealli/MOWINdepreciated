@@ -61,13 +61,13 @@ def dashboard(request):
     ).select_related('card__deck')  # Optimize related lookups
     
     # Get due cards, ensuring no duplicates
-    due_cards = progress_records.filter(next_review_date__lte=now).order_by('card_id').distinct('card_id')
+    due_cards = progress_records.filter(next_review_date__lte=now).order_by('card_id').values('card_id').distinct()
     
     # Count due cards
     cards_due = due_cards.count()
     
-    # Get first due card
-    first_due_progress = due_cards.select_related('card__deck').first()
+    # Get first due card directly from progress_records
+    first_due_progress = progress_records.filter(next_review_date__lte=now).first()
 
     # Calculate total box distribution with distinct card counts
     total_box_distribution = {}
@@ -76,7 +76,7 @@ def dashboard(request):
             user=user,
             card__deck__in=user_decks,
             box_level=box_level
-        ).order_by('card_id').distinct('card_id').count()
+        ).order_by('card_id').values('card_id').distinct().count()
 
     # Get deck statistics with optimized queries
     user_deck_stats = []
@@ -89,7 +89,7 @@ def dashboard(request):
         mastered_cards = deck_progress.filter(box_level__in=[4, 5]).count()
         mastery_level = round((mastered_cards / total_cards * 100) if total_cards > 0 else 0)
         # Calculate due cards for this deck
-        due_cards_count = deck_progress.filter(next_review_date__lte=now).order_by('card_id').distinct('card_id').count()
+        due_cards_count = deck_progress.filter(next_review_date__lte=now).order_by('card_id').values('card_id').distinct().count()
         # Append deck stats to list for display in dashboard 
         user_deck_stats.append({
             'deck': deck,
@@ -506,7 +506,7 @@ def upload_cards(request):
             data = json.loads(json_data)
             
             # Create or update the deck
-            deck, created = Deck.objects.get_or_create(
+            deck = Deck.objects.get_or_create(
                 name=data['name'],
                 defaults={
                     'description': data.get('description', ''),
@@ -571,7 +571,7 @@ def cards_in_box(request, box_level):
         user=user,
         card__deck__in=user_decks,
         box_level=box_level
-    ).select_related('card__deck').order_by('card_id').distinct('card_id')
+    ).select_related('card__deck').order_by('card_id').values('card_id').distinct()
 
     context = {
         'box_level': box_level,

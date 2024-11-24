@@ -24,7 +24,7 @@
 
         <!-- Previous Button -->
         {% if previous_card %}
-        <a href="{% url 'card-detail' subject=previous_card.subject pk=previous_card.id %}" class="card-footer-item  button is-link is-outlined">
+        <a href="{% url 'card-detail' subject=previous_card.subject id=previous_card.id %}" class="card-footer-item  button is-link is-outlined">
             <span class="icon">⬅️</span> <span>Previous</span>
         </a>
         {% endif %}
@@ -42,7 +42,7 @@
 
         <!-- Next Button -->
         {% if next_card %}
-        <a href="{% url 'card-detail' subject=next_card.subject pk=next_card.id %}" class="card-footer-item  button is-link is-outlined">
+        <a href="{% url 'card-detail' subject=next_card.subject id=next_card.id %}" class="card-footer-item  button is-link is-outlined">
             <span class="icon">➡️</span> <span>Next</span>
         </a>
         {% endif %}

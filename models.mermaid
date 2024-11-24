@@ -1,84 +1,60 @@
 erDiagram
-    User ||--o{ Deck : owns
-    User ||--|| Profile : has
-    User ||--o{ UserDeck : studies
-    User ||--o{ UserCardProgress : tracks
 
-    Deck ||--o{ UserDeck : "tracked by"
-    Deck }o--o{ Card : contains
-
-    Card ||--o{ UserCardProgress : "tracked by"
-
-    User {
-        int id PK
-        string username
-        string email
-        string password
-    }
-
-    Profile {
-        int id PK
-        int user_id FK
-        int study_streak
-        date last_study_date
-        int total_cards_studied
-        datetime created_at
-        datetime updated_at
-    }
-
-    Deck {
-        int id PK
-        int owner_id FK
-        string name
-        string description
-        datetime created_at
-        datetime updated_at
-        boolean is_public
-        string category
-        string tags
+    USERCARDPROGRESS {
+        int id
+        int box_level
         datetime last_reviewed
-        int review_count
+        datetime next_review_date
+        bool card_mastered
+        bool card_due_for_review
     }
+    USERCARDPROGRESS }o--|| USER : "tracks for"
+    USERCARDPROGRESS }o--|| CARD : "progress on"
 
-    Card {
-        int id PK
+    CARD {
+        int id
         string anishinaabemowin
         string english
         string pronunciation
         string subject
-        int box
         datetime date_created
-        boolean known
+        datetime date_modified
+    }
+    
+    CARD }o--|| DECK : "belongs to"
+    
+    DECK {
+        int id
+        string name
+        string description
+        datetime date_created
+        datetime updated_at
+        bool is_public
     }
 
-    UserDeck {
-        int id PK
-        int user_id FK
-        int deck_id FK
-        datetime last_reviewed
-        boolean is_favorite
-        float progress
-        int cards_mastered
-        int review_streak
-        datetime next_review_date
-        string custom_notes
-        int total_reviews
-        int correct_answers
-        int incorrect_answers
+
+    
+    DECK }o--o| PROFILE : "chosen by"
+    DECK ||--o{ CARD : "has many"
+
+
+    PROFILE {
+        int id
+        string preferred_name
+        int study_streak
+        datetime created_at
+        datetime updated_at
+    }
+    PROFILE ||--|| USER : "builds on"
+    
+    USER {
+        int id
+        string username
+        string email
     }
 
-    UserCardProgress {
-        int id PK
-        int user_id FK
-        int card_id FK
-        int box_level
-        datetime last_reviewed
-        datetime next_review_date
-        boolean round_completed
-        boolean known
-        int total_attempts
-        int correct_attempts
-        int streak
-        string notes
-        int difficulty_rating
-    }
+
+
+
+
+
