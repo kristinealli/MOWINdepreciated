@@ -2,6 +2,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView
 from cards.models import Deck
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Deck Views
 class DeckListView(LoginRequiredMixin, ListView):
@@ -11,14 +14,13 @@ class DeckListView(LoginRequiredMixin, ListView):
     context_object_name = 'decks'
 
     def get_queryset(self):
-        if self.request.GET.get('filter') == 'new':
-            return Deck.objects.exclude(
-                id__in=self.request.user.profile.chosen_decks.values_list('id', flat=True)
-            )
-        return Deck.objects.all()
+        queryset = Deck.objects.all().order_by('name')
+        logger.debug("Number of decks fetched: %d", queryset.count())
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        logger.debug("Rendering DeckListView with %d decks", len(context['decks']))
         context['show_add_buttons'] = self.request.GET.get('filter') == 'new'
         return context
 
@@ -30,10 +32,17 @@ class CardsInDeckView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['cards'] = self.object.cards.all().order_by('english')
         
-        # Debugging: Print the number of cards fetched
-        print(f"Deck: {self.object.name}, Number of cards fetched: {context['cards'].count()}")
+        # Prefetch related card objects to optimize query
+        deck = self.object
+        deck = Deck.objects.prefetch_related('cards').get(id=deck.id)
+        
+        context['cards'] = deck.cards.all().order_by('english')
+        
+        # Use lazy % formatting in logging functions
+        logger.debug("Deck: %s, Number of cards fetched: %d", deck.name, context['cards'].count())
         
         return context
+
+
 

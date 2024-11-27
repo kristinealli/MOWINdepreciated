@@ -66,6 +66,8 @@
                 {% if forloop.counter|divisibleby:3 %}
                 </div><div class="columns is-multiline">
                 {% endif %}
+                {% empty %}
+                    <p>No decks available.</p>
                 {% endfor %}
             </div>
         {% else %}

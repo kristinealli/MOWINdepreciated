@@ -1,9 +1,8 @@
-from typing import List, Dict
-
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.contrib.auth import get_user_model
+from django.contrib.postgres.fields import JSONField 
 
 User = get_user_model()
 
@@ -21,9 +20,8 @@ class UserCardProgress(models.Model):
     box_level = models.IntegerField(default=1)
     last_reviewed = models.DateTimeField(default=timezone.now)
     next_review_date = models.DateTimeField(default=timezone.now)
-    review_log: List[Dict[str, str]] = []
-    card_mastered = models.BooleanField(default=False) 
-    card_due_for_review = models.BooleanField(default=False) 
+    review_log = models.JSONField(default=list, blank=True)
+    card_mastered = models.BooleanField(default=False)
     
 #Return True if the card is due for review, False otherwise.
     def due_for_review(self) -> bool:

@@ -1,5 +1,6 @@
 # Django imports
 import json
+from django import forms
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -8,6 +9,9 @@ from django.shortcuts import redirect, render
 from cards.models import Deck, Card
 
 
+class CardUploadForm(forms.Form):
+    json_data = forms.JSONField()
+    
 @login_required
 def upload_cards(request):
     if not request.user.is_staff and not request.user.is_superuser:

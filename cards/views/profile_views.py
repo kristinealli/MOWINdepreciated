@@ -4,9 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView, View, DetailView
+from django.views.generic import UpdateView, DetailView
 from cards.forms import ProfileForm
-from cards.models import Profile, UserCardProgress, Deck
+from cards.models import Profile, UserCardProgress
 
 # Profile Views
 class ProfileDetailView(DetailView):
@@ -18,20 +18,15 @@ class ProfileDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user = self.request.user
-        chosen_decks = user.profile.chosen_decks.all()
+        profile = self.object
 
-        # Filter decks with mastered cards
-        mastered_decks = chosen_decks.filter(
-            cards__usercardprogress__user=user,
-            cards__usercardprogress__card_mastered=True
-        ).distinct()
-
-        # Count the number of mastered decks
-        mastered_decks_count = mastered_decks.count()
+        # Prefetch related deck objects for mastered decks
+        user_deck = profile.user_deck
+        mastered_decks = user_deck.cards.filter(
+            usercardprogress__box_level=5
+        ).select_related('deck').prefetch_related('deck__cards')
 
         context['mastered_decks'] = mastered_decks
-        context['mastered_decks_count'] = mastered_decks_count
         return context
 
     def post(self, request):

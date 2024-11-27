@@ -19,7 +19,7 @@
                 <nav class="navbar">
                     <div class="container">
                         <div class="navbar-brand">
-                            <a class="navbar-item">
+                            <a class="navbar-item" href="{% url 'home' %}">
                                 <img src="{% static 'MOWIN.png' %}" alt="Logo" />
                             </a>
                             <span class="navbar-burger" data-target="navbarMenuHeroB">
@@ -30,13 +30,13 @@
                         </div>
                         <div id="navbarMenuHeroB" class="navbar-menu">
                             <div class="navbar-end">
-                                <a class="navbar-item gowun-dodum-regular" href="{% url 'home' %}">Home</a>
+                                <a class="navbar-item gowun-dodum-regular is-active" href="{% url 'home' %}">Learning Dashboard</a>
                                 <a class="navbar-item gowun-dodum-regular" href="{% url 'about' %}">About</a>
 
                                 {% if user.is_authenticated %}
                                     <a class="navbar-item gowun-dodum-regular" href="{% url 'profile' %}">Profile</a>
                                     <a class="navbar-item gowun-dodum-regular" href="{% url 'deck-list' %}">Card Decks</a>
-                                    <a class="navbar-item is-active gowun-dodum-regular" href="{% url 'logout' %}">Logout</a>
+                                    <a class="navbar-item gowun-dodum-regular" href="{% url 'logout' %}">Logout</a>
                                 {% else %}
                                     <a class="navbar-item gowun-dodum-regular" href="{% url 'login' %}">Login</a>
                                     <a class="navbar-item gowun-dodum-regular" href="{% url 'signup' %}">Sign Up</a>
@@ -74,7 +74,15 @@
         
 
         
-        <p class="has-text-centered has-text-grey-lighter gowun-dodum-regular is-size-6 mt-2">
+        <style>
+            @media (max-width: 768px) { /* Adjust the max-width as needed for your mobile breakpoint */
+                .mobile-hidden {
+                    display: none;
+                }
+            }
+        </style>
+
+        <p class="has-text-centered has-text-grey-lighter gowun-dodum-regular is-size-6 mt-2 mobile-hidden">
             Mndoo Asiniisag 2024 
         </p>
         
@@ -98,5 +106,4 @@
         });
     </script>
     </body>
-
 </html>

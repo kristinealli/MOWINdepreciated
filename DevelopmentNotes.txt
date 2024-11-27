@@ -1,3 +1,0 @@
-RUN DEVELOPMENT WEB SERVER: 
-python manage.py runserver
-

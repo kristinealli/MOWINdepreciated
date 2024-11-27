@@ -7,7 +7,8 @@ from .deck_views import *
 from .card_views import *
 from .study_session_views import *
 from .admin_views import *
-from .dashboard import *
+from .dashboard_views import *
 from .curriculum_views import *
+from .progress_views import * 
 
 

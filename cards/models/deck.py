@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import QuerySet, Manager
-from django.utils import timezone
 
 from cards.models.progress import UserCardProgress
 
@@ -37,13 +36,7 @@ class Deck(models.Model):
         mastered_cards: int = cards_queryset.filter(card_mastered =True).count()
         return (mastered_cards / total_cards) * 100 if total_cards > 0 else 0
 
-    def get_due_cards(self, user):
-        return UserCardProgress.objects.filter(
-            user=user,
-            card__deck=self,
-            next_review_date__lte=timezone.now()
-        )
-
     class Meta:
         ordering = ['-date_created']
         indexes = []
+        

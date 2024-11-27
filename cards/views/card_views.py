@@ -39,12 +39,9 @@ class CardDetailView(DetailView):
         subject = card.subject
         deck_cards = Card.objects.filter(subject=subject).order_by("id")
         current_index = list(deck_cards).index(card)
-        context["previous_card"] = (
-            deck_cards[current_index - 1] if current_index > 0 else None
-        )
-        context["next_card"] = (
-            deck_cards[current_index + 1] if current_index < len(deck_cards) - 1 else None
-        )
+        context["previous_card"] = deck_cards.filter(id__lt=card.id).order_by('-id').first()
+        context["next_card"] = deck_cards.filter(id__gt=card.id).order_by('id').first()
+
         return context
 
 class PreviousCardView(View):

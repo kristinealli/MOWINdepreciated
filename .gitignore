@@ -13,6 +13,7 @@ media
 .env
 local_settings.py
 production_settings.py
+settings.local.py
 
 # Database
 *.sqlite3

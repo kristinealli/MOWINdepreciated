@@ -1,6 +1,6 @@
 {% extends "cards/base.html" %} {% block content %}
 <div class="container">
-	<h1 class="title is-2 gowun-dodum-regular">Studying: {{ deck.name }}</h1>
+	<h1 class="title is-2 gowun-dodum-regular">Studying: {{ current_card.deck.name }}</h1>
 
 	<div class="mb-5">
 		<a
@@ -16,6 +16,11 @@
 	{% if current_card %}
 	<div class="card">
 		<div class="card-content">
+			<!-- Display the number of cards due and left -->
+			<p class="has-text-centered mb-4 gowun-dodum-regular">
+				Cards Remaining: {{ total_due_cards }} 
+			</p>
+
 			<!-- Front of card -->
 			<div id="front" class="content has-text-centered">
 				<h2 class="title is-3 gowun-dodum-regular">
@@ -61,22 +66,6 @@
 			</div>
 		</div>
 	</div>
-
-	<!-- Box distribution -->
-	<div class="box mt-5">
-		<h3 class="title is-4 gowun-dodum-regular mb-4">Cards in Each Box:</h3>
-		{% for box, count in box_counts.items %}
-		<div
-			class="is-flex is-justify-content-space-between mb-2 gowun-dodum-regular">
-			<span>Box {{ box }}:</span>
-			<span>{{ count }} cards</span>
-		</div>
-		{% endfor %}
-	</div>
-	{% else %}
-	<div class="notification is-success gowun-dodum-regular">
-		No cards due for review! Come back later.
-	</div>
 	{% endif %}
 </div>
 
@@ -88,3 +77,11 @@
 	}
 </script>
 {% endblock %}
+
+<style>
+    @media (max-width: 768px) {
+        h1.title.is-2 {
+            font-size: 1.5rem; /* Adjust this value as needed */
+        }
+    }
+</style>

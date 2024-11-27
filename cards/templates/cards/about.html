@@ -6,7 +6,10 @@
         <div class="columns is-centered">
             <div class="column is-three-quarters">
                 <div class="content box">
-                    <h1 class="title has-text-centered gowun-dodum-regular">MOWIN - <br> An Anishinaabemowin Vocabulary App</h1>
+                    <h1 class="title has-text-centered gowun-dodum-regular">
+                        - MOWIN - <br> 
+                        <span class="vocab-app-title">An Anishinaabemowin Vocabulary App</span>
+                    </h1>
                     
                     <!-- Language Section -->
                     <div class="block mt-6">
@@ -39,8 +42,6 @@
                         </div>
                     </div>
                     
-                    
-
                     <!-- Purpose Section -->
                     <div class="block mt-6">
                         <h2 class="subtitle gowun-dodum-regular">Purpose</h2>
@@ -62,4 +63,24 @@
         </div>
     </div>
 </section>
+
+<style>
+    @media (max-width: 768px) {
+        .column.is-three-quarters {
+            width: 100%;
+        }
+        .content.box {
+            padding: 1rem;
+        }
+        .title, .subtitle, p {
+            text-align: center;
+        }
+        .vocab-app-title {
+            font-size: 1rem; 
+        }
+        .subtitle {
+            font-size: .5rem; 
+        }
+    }
+</style>
 {% endblock %}

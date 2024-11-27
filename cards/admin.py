@@ -1,5 +1,5 @@
 from django.contrib import admin
-from cards.models import UserCardProgress, Profile, Deck, Card
+from cards.models import UserCardProgress, Profile, Deck, Card, UserDeck 
 # Deck Admin
 class DeckAdmin(admin.ModelAdmin):
     list_display = ('name', 'is_public')
@@ -20,13 +20,17 @@ class UserCardProgressAdmin(admin.ModelAdmin):
 
 # Profile Admin
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'study_streak')
+    list_display = ('user',)
     search_fields = ('user__username',)
-    list_filter = ('study_streak',)
-
+    
+# UserDeck Admin 
+class UserDeckAdmin(admin.ModelAdmin): 
+    list_display = ('profile',) 
+    search_fields = ('profile__user__username',) 
 
 # Register all models
 admin.site.register(Deck, DeckAdmin)
 admin.site.register(Card, CardAdmin)
 admin.site.register(UserCardProgress, UserCardProgressAdmin)
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(UserDeck, UserDeckAdmin) 

@@ -35,7 +35,7 @@ class Card(models.Model):
     
     def __str__(self) -> str:
         return f"{self.anishinaabemowin} - {self.english}"
-    
+
     @property
     def get_subject(self):
         """Returns the subject if it exists, otherwise returns the deck name"""
