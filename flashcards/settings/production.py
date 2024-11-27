@@ -13,9 +13,15 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-n@4_u_5mgxq^d52s05zv-
 # Debug Mode (Set False for Production)
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-# Allowed Hosts
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='mowin-a09p.onrender.com').split(',')
+# # Allowed Hosts
+# ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='mowin-a09p.onrender.com').split(',')
 
+# https://docs.djangoproject.com/en/3.0/ref/settings/#allowed-hosts
+ALLOWED_HOSTS = []
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Database Configuration
 DATABASES = {
@@ -67,7 +73,7 @@ LOGGING = {
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'logs/django_errors.log',
+            'filename': '/Users/kristinejohnson/Documents/Django_ReactNative_FlashcardApp/flashcards_app/logs/django_errors.log',
             'formatter': 'verbose',
         },
     },
