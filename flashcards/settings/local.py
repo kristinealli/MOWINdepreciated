@@ -50,7 +50,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Ensure the app is secure
 DEBUG = True
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '840a-2600-1007-a111-bef-2106-f51d-47de-a18.ngrok-free.app', 'df39-2600-1007-a111-bef-2106-f51d-47de-a18.ngrok-free.app'  ]
 ROOT_URLCONF = 'flashcards.urls'
 
 
@@ -90,3 +90,7 @@ TEMPLATES = [
         },
     },
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://df39-2600-1007-a111-bef-2106-f51d-47de-a18.ngrok-free.app'
+    ]     
