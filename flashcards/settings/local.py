@@ -1,7 +1,16 @@
 import os
 
 from pathlib import Path
+
+import dj_database_url
 from decouple import config
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL', default='postgres://kristinejohnson:plAgue2020@localhost:5432/flashcards'),
+        conn_max_age=600
+    )
+}
 
 
 
@@ -28,22 +37,22 @@ except ImportError:
     DEBUG = config('DEBUG', default=False, cast=bool)
     ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
 
-# Database configuration
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'flashcards'),
-        'USER': os.getenv('DB_USER', 'kristinejohnson'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'plAgue2020'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),  # or your Railway host
-        'PORT': os.getenv('DB_PORT', '5432'),  # default PostgreSQL port
-    }
-}
+# # Database configuration
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('DB_NAME', 'flashcards'),
+#         'USER': os.getenv('DB_USER', 'kristinejohnson'),
+#         'PASSWORD': os.getenv('DB_PASSWORD', 'plAgue2020'),
+#         'HOST': os.getenv('DB_HOST', 'localhost'),  # or your Railway host
+#         'PORT': os.getenv('DB_PORT', '5432'),  # default PostgreSQL port
+#     }
+# }
 
 # Configure static files for Heroku
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'cards/static'] 
+STATIC_ROOT = os.path.join(BASE_DIR, 'cards/static')
+STATIC_URL = 'cards/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'cards/static')] 
 
 # Simplify static file serving
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -62,6 +71,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cards',  
+    'sslserver', 
 ]
 
 MIDDLEWARE = [

@@ -8,7 +8,8 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Secret Key
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-n@4_u_5mgxq^d52s05zv-^khjsn$mpl1576nd^9by7!ebgj$e5')
+
+SECRET_KEY = config('SECRET_KEY')
 
 # Debug Mode (Set False for Production)
 DEBUG = config('DEBUG', default=False, cast=bool)
@@ -17,7 +18,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 # ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='mowin-a09p.onrender.com').split(',')
 
 # https://docs.djangoproject.com/en/3.0/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '840a-2600-1007-a111-bef-2106-f51d-47de-a18.ngrok-free.app']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -25,17 +26,13 @@ if RENDER_EXTERNAL_HOSTNAME:
 
 # Database Configuration
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL', default='postgres://kristinejohnson:plAgue2020@localhost:5432/flashcards'),
-        conn_max_age=600
-    )
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'), conn_max_age=600)
 }
-
 # Static Files
-STATIC_URL = '/static/'
-if not DEBUG: 
-    STATIC_ROOT = os.path.join(BASE_DIR / 'staticfiles')
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_URL = 'cards/static/'
+STATIC_ROOT = os.path.join(BASE_DIR / 'cards/static')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'cards/static')]
 
 # Middleware
 MIDDLEWARE = [
@@ -103,6 +100,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'cards',
+    'sslserver',
 ]
 
 TEMPLATES = [
