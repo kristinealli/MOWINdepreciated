@@ -70,7 +70,7 @@ LOGGING = {
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'django_errors.log'),
+            'filename': os.path.join(BASE_DIR, 'LOG_DIR', 'django_errors.log'),
         },
     },
     'loggers': {
@@ -82,7 +82,10 @@ LOGGING = {
     },
 }
 
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
 
+# Email Settings
 # Default Auto Field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
