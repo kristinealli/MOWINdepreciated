@@ -62,28 +62,26 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
-            'style': '{',
-        },
-    },
     'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': '/Users/kristinejohnson/Documents/Django_ReactNative_FlashcardApp/flashcards_app/logs/django_errors.log',
-            'formatter': 'verbose',
+            'filename': os.path.join(BASE_DIR, 'logs', 'django_errors.log'),
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
-            'level': 'ERROR',
+            'handlers': ['console'] if os.getenv('RENDER') else ['console', 'file'],
+            'level': 'DEBUG',
             'propagate': True,
         },
     },
 }
+
 
 # Default Auto Field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
