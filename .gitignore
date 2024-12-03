@@ -13,7 +13,6 @@ media
 .env
 local.py
 
-
 # Database
 *.sqlite3
 /postgre-data/
