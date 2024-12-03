@@ -59,31 +59,43 @@ SECURE_HSTS_PRELOAD = config('SECURE_HSTS_PRELOAD', default=True, cast=bool)
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # Logging
+
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+LOG_DIR.mkdir(exist_ok=True)  # Create the directory if it doesn't exist
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
         'console': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
         },
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'LOG_DIR', 'django_errors.log'),
+            'filename': BASE_DIR / 'logs/django_errors.log',
+            'formatter': 'verbose',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['console'] if os.getenv('RENDER') else ['console', 'file'],
-            'level': 'DEBUG',
+            'handlers': ['console'] if os.environ.get('RENDER') else ['file'],
+            'level': 'ERROR',
             'propagate': True,
         },
     },
 }
 
-LOG_DIR = os.path.join(BASE_DIR, "logs")
-os.makedirs(LOG_DIR, exist_ok=True)
+
+
 
 # Email Settings
 # Default Auto Field
