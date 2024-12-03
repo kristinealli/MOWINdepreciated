@@ -50,9 +50,11 @@ except ImportError:
 # }
 
 # Configure static files for Heroku
-STATIC_ROOT = os.path.join(BASE_DIR, 'cards/static')
-STATIC_URL = 'cards/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'cards/static')] 
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # This is where collectstatic will collect static files for production
+STATICFILES_DIRS = [
+    BASE_DIR / 'cards/static',  # This is where your static files are located during development
+]
 
 # Simplify static file serving
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
