@@ -60,9 +60,6 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # Logging
 
-LOG_DIR = os.path.join(BASE_DIR, "logs")
-LOG_DIR.mkdir(exist_ok=True)  # Create the directory if it doesn't exist
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -78,23 +75,15 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
         },
-        'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'logs/django_errors.log',
-            'formatter': 'verbose',
-        },
     },
     'loggers': {
         'django': {
-            'handlers': ['console'] if os.environ.get('RENDER') else ['file'],
+            'handlers': ['console'],
             'level': 'ERROR',
             'propagate': True,
         },
     },
 }
-
-
 
 
 # Email Settings
