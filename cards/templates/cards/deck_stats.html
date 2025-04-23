@@ -1,0 +1,17 @@
+{% extends 'cards/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="title">Statistics for {{ deck.name }}</h1>
+    
+    <div class="box">
+        <div class="columns">
+            <div class="column">
+                <p class="subtitle">Total Cards: {{ total_cards }}</p>
+                <p class="subtitle">Mastered Cards: {{ mastered_cards }}</p>
+                <p class="subtitle">Mastery Level: {{ mastery_percentage|floatformat:1 }}%</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

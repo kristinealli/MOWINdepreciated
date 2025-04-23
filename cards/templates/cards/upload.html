@@ -1,0 +1,84 @@
+{% extends "cards/base.html" %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-half">
+                <div class="box">
+                    <h1 class="title has-text-centered gowun-dodum-regular">Upload Cards to {{ deck.name }}</h1>
+                    
+                    <!-- Success/Error Messages -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="notification {% if message.tags %}is-{{ message.tags }}{% endif %}">
+                                <button class="delete"></button>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <!-- JSON Input Field -->
+                        <div class="field">
+                            <label class="label gowun-dodum-regular">Paste JSON Data</label>
+                            <div class="control">
+                                <textarea class="textarea" name="json_data" rows="10" 
+                                    placeholder='{
+    "cards": [
+        {
+            "anishinaabemowin": "Word or Phrase",
+            "english": "Translation",
+            "pronunciation": "Pronunciation guide"
+        }
+    ]
+}'></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Format Help -->
+                        <div class="notification is-info is-light mt-4">
+                            <h4 class="is-size-6 gowun-dodum-regular mb-2">JSON Format Requirements:</h4>
+                            <ul class="gowun-dodum-regular">
+                                <li>• Must be valid JSON format</li>
+                                <li>• Each card must have:</li>
+                                <li class="ml-4">- anishinaabemowin (required)</li>
+                                <li class="ml-4">- english (required)</li>
+                                <li class="ml-4">- pronunciation (optional)</li>
+                            </ul>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="field mt-5">
+                            <div class="control has-text-centered">
+                                <button type="submit" class="button is-primary is-medium gowun-dodum-regular">
+                                    <span class="icon">
+                                        <i class="fas fa-save"></i>
+                                    </span>
+                                    <span>Import Cards</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript for notification dismissal -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Notification dismissal
+        const deleteButtons = document.querySelectorAll('.notification .delete');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                button.parentElement.remove();
+            });
+        });
+    });
+</script>
+
+{% endblock %}

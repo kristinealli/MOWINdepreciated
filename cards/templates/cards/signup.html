@@ -1,0 +1,50 @@
+{% extends 'cards/base.html' %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-half">
+                <div class="box">
+                    <h1 class="title has-text-centered gowun-dodum-regular">Sign Up</h1>
+                    
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        {% for field in form %}
+                        <div class="field">
+                            <label class="label gowun-dodum-regular">{{ field.label }}</label>
+                            <div class="control">
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="notification is-danger is-light">
+                                        {{ field.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            {% if field.help_text %}
+                                <p class="help gowun-dodum-regular">{{ field.help_text }}</p>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-primary is-fullwidth gowun-dodum-regular" type="submit">
+                                    Sign Up
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="has-text-centered mt-4">
+                        <p class="gowun-dodum-regular">
+                            Already have an account? <a href="{% url 'login' %}">Login here</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

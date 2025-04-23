@@ -1,0 +1,118 @@
+{% extends "cards/base.html" %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 class="title gowun-dodum-regular">My Curriculum</h1>
+        
+        <!-- Current Curriculum -->
+        <div class="box">
+            <h2 class="subtitle gowun-dodum-regular">Selected Decks</h2>
+            {% if decks %}
+                {% for deck in decks %}
+                <div class="columns is-vcentered mb-2">
+                    <div class="column">
+                        <h3 class="title is-5 gowun-dodum-regular">{{ deck.name }}</h3>
+                        <p class="subtitle is-6 gowun-dodum-regular">{{ deck.description }}</p>
+                    </div>
+                    <div class="column is-narrow">
+                        <form method="POST" action="{% url 'remove-from-curriculum' deck.id %}" class="remove-deck-form">
+                            {% csrf_token %}
+                            <button type="button" class="button is-danger is-outlined gowun-dodum-regular remove-deck-button">
+                                <span class="icon">
+                                    <i class="fas fa-minus"></i>
+                                </span>
+                                <span>Remove</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="gowun-dodum-regular">No decks in your curriculum yet.</p>
+            {% endif %}
+        </div>
+
+        <!-- Available Decks -->
+        <div class="box">
+            <h2 class="subtitle gowun-dodum-regular">Available Decks</h2>
+            {% if available_decks %}
+                {% for deck in available_decks %}
+                <div class="columns is-vcentered mb-2">
+                    <div class="column">
+                        <h3 class="title is-5 gowun-dodum-regular">{{ deck.name }}</h3>
+                        <p class="subtitle is-6 gowun-dodum-regular">{{ deck.description }}</p>
+                    </div>
+                    <div class="column is-narrow">
+                        <form method="POST" action="{% url 'add-to-curriculum' deck.id %}">
+                            {% csrf_token %}
+                            <button class="button is-primary is-outlined gowun-dodum-regular">
+                                <span class="icon">
+                                    <i class="fas fa-plus"></i>
+                                </span>
+                                <span>Add to Curriculum</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="gowun-dodum-regular">No additional decks available.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Modal Structure -->
+<div id="removeDeckModal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Warning</p>
+            <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+            <p>Are you sure you want to remove this deck from your curriculum? All progress on this deck will be deleted.</p>
+        </section>
+        <footer class="modal-card-foot">
+            <button class="button is-danger" id="confirmRemove">Remove</button>
+            <button class="button" id="cancelRemove">Cancel</button>
+        </footer>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('removeDeckModal');
+    const confirmButton = document.getElementById('confirmRemove');
+    const cancelButton = document.getElementById('cancelRemove');
+    const closeButton = modal.querySelector('.delete');
+    let currentForm = null;
+
+    document.querySelectorAll('.remove-deck-button').forEach(button => {
+        button.addEventListener('click', (event) => {
+            currentForm = event.target.closest('form');
+            modal.classList.add('is-active');
+        });
+    });
+
+    confirmButton.addEventListener('click', () => {
+        if (currentForm) {
+            currentForm.submit();
+        }
+    });
+
+    cancelButton.addEventListener('click', () => {
+        modal.classList.remove('is-active');
+    });
+
+    closeButton.addEventListener('click', () => {
+        modal.classList.remove('is-active');
+    });
+
+    document.querySelector('.modal-background').addEventListener('click', () => {
+        modal.classList.remove('is-active');
+    });
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,4 @@
+environment:
+  DJANGO_SUPERUSER_USERNAME: admin
+  DJANGO_SUPERUSER_EMAIL: hello@kristineallisonjohnson.com
+  DJANGO_SUPERUSER_PASSWORD: plAgue2020

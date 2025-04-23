@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        {% load static %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Mowin - Anishinaabemowin Vocabulary</title>
+        <link rel="stylesheet" href="{% static 'bulma.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@creativebulma/bulma-tooltip@1.2.0/dist/bulma-tooltip.min.css">
+        
+    </head>
+
+    <body class="hero">
+    
+        <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 10;">
+            <div class="hero-head has-background-black">
+                <nav class="navbar">
+                    <div class="container">
+                        <div class="navbar-brand">
+                            <a class="navbar-item" href="{% url 'home' %}">
+                                <img src="{% static 'MOWIN.png' %}" alt="Logo" />
+                            </a>
+                            <span class="navbar-burger" data-target="navbarMenuHeroB">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </span>
+                        </div>
+                        <div id="navbarMenuHeroB" class="navbar-menu">
+                            <div class="navbar-end">
+                                <a class="navbar-item gowun-dodum-regular is-active" href="{% url 'home' %}">Learning Dashboard</a>
+                                <a class="navbar-item gowun-dodum-regular" href="{% url 'about' %}">About</a>
+
+                                {% if user.is_authenticated %}
+                                    <a class="navbar-item gowun-dodum-regular" href="{% url 'profile' %}">Profile</a>
+                                    <a class="navbar-item gowun-dodum-regular" href="{% url 'deck-list' %}">Card Decks</a>
+                                    <a class="navbar-item gowun-dodum-regular" href="{% url 'logout' %}">Logout</a>
+                                {% else %}
+                                    <a class="navbar-item gowun-dodum-regular" href="{% url 'login' %}">Login</a>
+                                    <a class="navbar-item gowun-dodum-regular" href="{% url 'signup' %}">Sign Up</a>
+                                {% endif %}
+                                {% if user.is_authenticated %}
+                                    {% if user.is_staff or user.is_superuser %}
+                                        <a href="{% url 'upload-cards' %}" class="navbar-item">
+                                            Upload Cards
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        
+        <main style="padding-top: 2rem; padding-bottom: 2rem; overflow-y: auto; height: calc(100vh - 7rem);">
+            <div class="hero-body">
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div class="notification is-{{ message.tags }} is-light">
+                                <button class="delete"></button>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% block content %}
+                {% endblock %}
+            </div>
+        </main>
+        
+
+        
+        <style>
+            @media (max-width: 768px) { /* Adjust the max-width as needed for your mobile breakpoint */
+                .mobile-hidden {
+                    display: none;
+                }
+            }
+        </style>
+
+        <p class="has-text-centered has-text-grey-lighter gowun-dodum-regular is-size-6 mt-2 mobile-hidden">
+            Mndoo Asiniisag 2024 
+        </p>
+        
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get all "navbar-burger" elements
+            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+            // Add a click event on each of them
+            $navbarBurgers.forEach(el => {
+                el.addEventListener('click', () => {
+                    // Get the target from the "data-target" attribute
+                    const target = el.dataset.target;
+                    const $target = document.getElementById(target);
+
+                    // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+                    el.classList.toggle('is-active');
+                    $target.classList.toggle('is-active');
+                });
+            });
+        });
+    </script>
+    </body>
+</html>

@@ -1,0 +1,86 @@
+{% extends "cards/base.html" %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-three-quarters">
+                <div class="content box">
+                    <h1 class="title has-text-centered gowun-dodum-regular">
+                        - MOWIN - <br> 
+                        <span class="vocab-app-title">An Anishinaabemowin Vocabulary App</span>
+                    </h1>
+                    
+                    <!-- Language Section -->
+                    <div class="block mt-6">
+                        <h2 class="subtitle gowun-dodum-regular">Anishinaabemowin Language</h2>
+                        <p class="gowun-dodum-regular">
+                            Anishinaabemowin, also known as Ojibwe, is one of the largest Indigenous languages north of Mexico. 
+                            It is the ancestral language of the Anishinaabe people and is spoken across parts of Canada and the 
+                            United States, particularly around the Great Lakes region. As a living language that carries centuries 
+                            of cultural knowledge and wisdom, it continues to be vital to Anishinaabe identity and way of life.
+                        </p>
+                    </div>
+
+                    <!-- Learning Method Section -->
+                    <div class="block mt-6">
+                        <h2 class="subtitle gowun-dodum-regular">The Leitner Learning System</h2>
+                        <p class="gowun-dodum-regular">
+                            MOWIN uses the Leitner system, a scientifically proven method of spaced repetition learning. 
+                            This system was developed by Sebastian Leitner in the 1970s and is designed to help users 
+                            learn more efficiently by focusing on the material they find most challenging.
+                        </p>
+                        
+                        <div class="notification mt-4">
+                            <h3 class="is-size-5 gowun-dodum-regular">How it Works:</h3>
+                            <ul class="gowun-dodum-regular">
+                                <li>Cards are sorted into different boxes based on how well you know them</li>
+                                <li>Correctly answered cards move to the next box and are reviewed less frequently</li>
+                                <li>Incorrect cards return to the first box for more frequent review</li>
+                                <li>This system ensures you spend more time on challenging words and less time on ones you know well</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Purpose Section -->
+                    <div class="block mt-6">
+                        <h2 class="subtitle gowun-dodum-regular">Purpose</h2>
+                        <p class="gowun-dodum-regular">
+                            MOWIN is designed to support language learners in their journey to learn and practice 
+                            Anishinaabemowin vocabulary. By combining traditional language learning with modern 
+                            educational techniques, it aims to help contribute to the preservation and revitalization 
+                            of this important Indigenous language.
+                        </p>
+                        <div class="has-text-centered mt-4">
+                            <p class="gowun-dodum-regular has-text-primary is-size-5">
+                                This app is a work in progress and is not yet ready for public use.
+                            </p>
+                            <p class="gowun-dodum-regular">Created with ❤️  by: Mndoo Asiniisag AKA Kristine Allison Johnson </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    @media (max-width: 768px) {
+        .column.is-three-quarters {
+            width: 100%;
+        }
+        .content.box {
+            padding: 1rem;
+        }
+        .title, .subtitle, p {
+            text-align: center;
+        }
+        .vocab-app-title {
+            font-size: 1rem; 
+        }
+        .subtitle {
+            font-size: .5rem; 
+        }
+    }
+</style>
+{% endblock %}

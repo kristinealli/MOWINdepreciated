@@ -1,0 +1,93 @@
+{% extends "cards/base.html" %}
+
+{% block content %}
+
+<!-- Return to Deck List Button -->
+<a href="{% url 'deck-list' %}" class="button is-link is-outlined">
+    <span class="icon">🏠</span> <span>Back to Deck List</span>
+</a>
+
+<article class="card">
+    <div class="buttons is-centered mt-3">
+        <div class="card-content has-text-centered">
+            <p class="title is-2">{{ card.anishinaabemowin }}</p>
+            <button class="button is-small is-info mt-3" id="reveal-btn" onclick="toggleEnglish()">
+                <span id="toggle-english-text">Reveal English</span>
+            </button>
+            <!-- English Word (Hidden initially) -->
+            <p class="subtitle is-2 mt-6" id="english-word" style="display: none;">{{ card.english }}</p>
+        </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <footer class="card-footer">
+
+        <!-- Previous Button -->
+        {% if previous_card %}
+        <a href="{% url 'card-detail' subject=previous_card.subject id=previous_card.id %}" class="card-footer-item  button is-link is-outlined">
+            <span class="icon">⬅️</span> <span>Previous</span>
+        </a>
+        {% endif %}
+        
+        <!-- Toggle Known / Unknown Button -->
+        <button id="toggle-known-btn" class="button is-success is-outlined card-footer-item" type="button" onclick="toggleKnownStatus()">
+            <span id="toggle-known-icon">
+                {% if card.known %}
+                ✅ Marked as Known
+                {% else %}
+                ❌ Mark as Known
+                {% endif %}
+            </span>
+        </button>
+
+        <!-- Next Button -->
+        {% if next_card %}
+        <a href="{% url 'card-detail' subject=next_card.subject id=next_card.id %}" class="card-footer-item  button is-link is-outlined">
+            <span class="icon">➡️</span> <span>Next</span>
+        </a>
+        {% endif %}
+
+        <!-- Known / Unknown Toggle Button -->
+        <div class="buttons has-text-centered mt-3">
+            <form method="post" action="{% url 'card-check' %}">
+                {% csrf_token %}
+                <input type="hidden" name="card_id" value="{{ card.id }}">
+
+                
+            </form>
+        </div>
+    </footer>
+</article>
+
+<script>
+    function toggleEnglish() {
+        const englishWord = document.getElementById('english-word');
+        const toggleText = document.getElementById('toggle-english-text');
+
+        // Toggle visibility of English word
+        if (englishWord.style.display === 'none') {
+            englishWord.style.display = 'block';
+            toggleText.textContent = 'Hide English';
+        } else {
+            englishWord.style.display = 'none';
+            toggleText.textContent = 'Reveal English';
+        }
+    }
+
+    function toggleKnownStatus() {
+        const button = document.getElementById('toggle-known-btn');
+        const icon = document.getElementById('toggle-known-icon');
+
+        // Toggle known status
+        if (icon.textContent.includes("Mark as Known")) {
+            icon.innerHTML = "✅ Marked as Known";
+            button.classList.remove("is-success");
+            button.classList.add("is-info");
+        } else {
+            icon.innerHTML = "❌ Mark as Known";
+            button.classList.remove("is-info");
+            button.classList.add("is-success");
+        }
+    }
+</script>
+{% endblock %}

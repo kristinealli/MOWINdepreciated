@@ -1,0 +1,98 @@
+{% extends "cards/base.html" %} {% load cards_tags %} {% block content %}
+<section class="section">
+	<div class="container">
+		<div class="columns is-centered">
+			<div class="column is-three-quarters">
+				<div class="box has-background-black">
+					<h1
+						class="title has-text-centered gowun-dodum-regular has-text-primary">
+						Profile
+					</h1>
+
+                                <!-- Basic User Information -->
+                                <div class="box mb-5">
+                                    <h2 class="subtitle has-text-primary gowun-dodum-regular">
+                                        Basic Information
+                                    </h2>
+                                    <div class="columns">
+                                        <div class="column">
+                                            <p class="gowun-dodum-regular">
+                                                <strong>Username:</strong> {{ user.username }}
+                                            </p>
+                                            <p class="gowun-dodum-regular">
+                                                <strong>Preferred Name:</strong> {{ profile.preferred_name|default:"Not set" }}
+                                            </p>
+                                            <p class="gowun-dodum-regular">
+                                                <strong>Date Joined:</strong> {{ user.date_joined|date:"F j, Y" }}
+                                            </p>
+                                            <p class="gowun-dodum-regular">
+                                                <strong>Last Login:</strong> {{ user.last_login|date:"F j, Y H:i" }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+					<!-- Curriculum Information -->
+					<div class="box mb-5">
+						<h2
+							class="subtitle has-text-primary gowun-dodum-regular">
+							Curriculum
+						</h2>
+						<div class="content">
+							<h3 class="gowun-dodum-regular">
+								Chosen Decks ({{ profile.chosen_decks.count }})
+							</h3>
+							<ul>
+								{% for deck in profile.chosen_decks.all %}
+								<li class="gowun-dodum-regular">
+									{{ deck.name }}
+								</li>
+								{% empty %}
+								<li class="gowun-dodum-regular">
+									No decks added to curriculum yet
+								</li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+					
+					<!-- Mastered Decks Information -->
+					<div class="box mb-5">
+						<h2 class="subtitle has-text-primary gowun-dodum-regular">
+							Mastered Decks
+						</h2>
+						<div class="content">
+							<h3 class="gowun-dodum-regular">
+								Mastered Decks ({{ mastered_decks_count }})
+							</h3>
+							<ul>
+								{% for deck in mastered_decks %}
+								<li class="gowun-dodum-regular">
+									{{ deck.name }}
+								</li>
+								{% empty %}
+								<li class="gowun-dodum-regular">
+									No decks mastered yet
+								</li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+
+					<!-- Progress Overview -->
+					<nav class="level">
+						<div class="level-item has-text-centered">
+							<a href="{% url 'user_progress_log' %}" class="button is-primary">
+								Today's Progress Log
+							</a>
+						</div>
+					</nav>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}

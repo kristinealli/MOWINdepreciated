@@ -1,0 +1,87 @@
+{% extends "cards/base.html" %} {% block content %}
+<div class="container">
+	<h1 class="title is-2 gowun-dodum-regular">Studying: {{ current_card.deck.name }}</h1>
+
+	<div class="mb-5">
+		<a
+			href="{% url 'dashboard' %}"
+			class="button is-link gowun-dodum-regular">
+			<span class="icon">
+				<i class="fas fa-arrow-left"></i>
+			</span>
+			<span>Back to Dashboard</span>
+		</a>
+	</div>
+
+	{% if current_card %}
+	<div class="card">
+		<div class="card-content">
+			<!-- Display the number of cards due and left -->
+			<p class="has-text-centered mb-4 gowun-dodum-regular">
+				Cards Remaining: {{ total_due_cards }} 
+			</p>
+
+			<!-- Front of card -->
+			<div id="front" class="content has-text-centered">
+				<h2 class="title is-3 gowun-dodum-regular">
+					{{ current_card.anishinaabemowin }}
+				</h2>
+				{% if current_card.pronunciation %}
+				<p class="subtitle is-5 gowun-dodum-regular">
+					({{ current_card.pronunciation }})
+				</p>
+				{% endif %}
+			</div>
+
+			<!-- Back of card (hidden initially) -->
+			<div
+				id="back"
+				class="content has-text-centered"
+				style="display: none">
+				<h2 class="title is-3 gowun-dodum-regular">
+					{{ current_card.english }}
+				</h2>
+			</div>
+
+			<!-- Show/Hide answer button -->
+			<div class="has-text-centered my-4">
+				<button id="show-answer-btn" class="button is-info is-medium gowun-dodum-regular" onclick="toggleAnswer()">
+					Show Answer
+				</button>
+			</div>
+
+			<!-- Review buttons (hidden initially) -->
+			<div id="review-buttons" class="has-text-centered" style="display: none;">
+				<form method="POST">
+					{% csrf_token %}
+					<div class="buttons is-centered mt-4" style="display: flex; justify-content: center;">
+						<button type="submit" name="correct" value="false" class="button is-danger is-medium gowun-dodum-regular" style="flex: 1; margin-right: 10px;">
+							Awee! I need to study this more...
+						</button>
+						<button type="submit" name="correct" value="true" class="button is-success is-medium gowun-dodum-regular" style="flex: 1;">
+							Aho! I knew this one!
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+</div>
+
+<script>
+	function toggleAnswer() {
+		document.getElementById('back').style.display = 'block';
+		document.getElementById('review-buttons').style.display = 'block';
+		document.getElementById('show-answer-btn').style.display = 'none';
+	}
+</script>
+{% endblock %}
+
+<style>
+    @media (max-width: 768px) {
+        h1.title.is-2 {
+            font-size: 1.5rem; /* Adjust this value as needed */
+        }
+    }
+</style>

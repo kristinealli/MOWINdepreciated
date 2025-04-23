@@ -1,0 +1,276 @@
+{% extends "cards/base.html" %}
+{% load cards_tags %}
+
+{% block content %}
+<!-- Welcome Section -->
+<section class="hero is-small is-primary">
+    <div class="hero-body">
+        <div class="container">
+            {% if not user_decks %}
+                <!-- First-time user without decks -->
+                <h1 class="title is-2 gowun-dodum-regular">
+                    Welcome to MOWIN, {{ user.profile.preferred_name|default:user.username }}!
+                </h1>
+                <div class="content gowun-dodum-regular">
+                    <p class="subtitle">Let's get you started on your language learning journey!</p>
+                    <div class="notification is-primary is-light mt-3">
+                        <div class="is-flex is-align-items-center mb-2">
+                            <span class="icon mr-2">
+                                <i class="fas fa-lightbulb"></i>
+                            </span>
+                            <strong>Quick Start Guide:</strong>
+                        </div>
+                        <ol class="ml-5">
+                            <li>Click "Add New Decks" to choose your first study deck</li>
+                            <li>Learn about the <a href="{% url 'about' %}" class="has-text-primary-dark">Leitner System</a> we use for efficient learning</li>
+                            <li>If you're ever lost - click <a href="{% url 'dashboard' %}" class="has-text-primary-dark">Learning Dashboard</a> or the MOWIN logo in the top left corner to return to the main page</li>
+                            <li>Once you've added a deck to your curriculum, you can review cards by clicking the <a href="{% url 'deck-list' %}?filter=new" class="has-text-primary-dark">Add New Decks</a> button below!</li>
+                        </ol>
+                    </div>
+                </div>
+            {% elif request.session.first_login %}
+                <!-- First login after adding decks -->
+                <h1 class="title is-2 gowun-dodum-regular">
+                    Welcome back, {{ user.profile.preferred_name|default:user.username }}!
+                </h1>
+                <p class="subtitle gowun-dodum-regular">
+                    {% if count_due_cards > 0 %}
+                        You have {{ count_due_cards }} cards waiting for review.
+                    {% else %}
+                        You're all caught up! Great job!
+                    {% endif %}
+                </p>
+            {% else %}
+                <!-- Regular dashboard visit -->
+                <h1 class="title is-2 gowun-dodum-regular">
+                    {{ user.profile.preferred_name }}'s Dashboard
+                </h1>
+                <p class="subtitle gowun-dodum-regular">
+                    {% if count_due_cards > 0 %}
+                        You have {{ count_due_cards}} cards waiting for review.
+                    {% else %}
+                        You're all caught up! Great job!
+                    {% endif %}
+                </p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<style>
+    @media (max-width: 768px) {
+        .table-container {
+            display: none; 
+        }
+        .mobile-active-decks {
+            display: block; 
+        }
+        .subtitle.is-6 {
+            display: none;
+        }
+        .active-decks-title {
+            display: none; 
+        }
+    }
+    @media (min-width: 769px) {
+        .mobile-active-decks {
+            display: none; 
+        }
+    }
+</style>
+
+<section class="section">
+    <div class="container">
+        <!-- Mastery Overview -->
+        <div class="box mb-5">
+            <div class="is-flex is-align-items-center mb-4">
+                <h3 class="title is-5 mb-0 mr-2">Mastery Progress</h3>
+                <a href="{% url 'about' %}" 
+                    class="icon has-tooltip-right has-tooltip-multiline" 
+                    data-tooltip="Learn more about the Leitner System here!">
+                    <i class="fas fa-info-circle has-text-info"></i>
+                </a>
+            </div>
+            <div class="columns is-mobile is-multiline">
+                {% for box, count in total_box_distribution.items %}
+                <div class="column is-one-fifth has-text-centered">
+                    <a href="{% url 'cards_in_box' box %}" class="icon has-tooltip-right has-tooltip-multiline" data-tooltip="View cards in this box.">
+                        <i class="fas fa-layer-group"></i>
+                    </a>
+                    <p class="heading">Box {{ box }}</p>
+                    <p class="title is-4">{{ count }}</p>
+                    <p class="subtitle is-6">
+                        {{ box_levels|get_item:box }}
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="columns">
+            <!-- Active Decks -->
+            <div class="active-decks column is-8">
+                <div class="box active-decks">
+                    <h3 class="title is-5 gowun-dodum-regular mb-4 active-decks-title" data-tooltip="This section shows your active decks and your progress to mastering them.">Active Decks</h3>
+                    <div class="table-container active-decks">
+                        <table class="table is-fullwidth is-hoverable is-striped is-narrow active-decks">
+                            <thead>
+                                <tr>
+                                    <th class="gowun-dodum-regular">Deck</th>
+                                    <th class="gowun-dodum-regular">Progress</th>
+                                    <th class="gowun-dodum-regular">Due</th>
+                                    <th class="gowun-dodum-regular">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for deck_stat in deck_stats %}
+                                    <tr>
+                                        <td class="gowun-dodum-regular">{{ deck_stat.deck.name }}</td>
+                                        <td style="width: 40%;">
+                                            <progress class="progress is-primary is-small" 
+                                                    value="{{ deck_stat.mastery_level }}" 
+                                                    max="100">
+                                            </progress>
+                                            <span class="is-size-7 gowun-dodum-regular">{{ deck_stat.mastery_level }}%</span>
+                                        </td>
+                                        <td class="gowun-dodum-regular">
+                                            {% if deck_stat.count_due_cards_in_deck > 0 %}
+                                                <span class="tag is-warning">{{ deck_stat.count_due_cards_in_deck }}/{{ deck_stat.cards_in_deck }} </span>
+                                            {% else %}
+                                                <span class="tag is-success">0</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="buttons are-small is-flex is-justify-content-center">
+                                                <a href="{% url 'cards-in-deck' pk=deck_stat.deck.pk %}" 
+                                                    class="button is-primary is-rounded gowun-dodum-regular">
+                                                    <span class="icon"><i class="fas fa-book-open"></i></span>
+                                                    <span>View Cards</span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="column is-4">
+                <!-- Wrap the sections in a container -->
+                <div class="dashboard-sections">
+                    <!-- Start Reviewing and Quick Actions -->
+                    <div class="start-reviewing-and-quick-actions">
+                        <!-- Existing content for Start Reviewing and Quick Actions -->
+                        <div class="box has-text-centered mb-5">
+                            <p class="heading gowun-dodum-regular is-size-6">Cards Due Today</p>
+                            <p class="title is-2 gowun-dodum-regular has-text-info">{{ count_due_cards }}</p>
+                            {% if count_due_cards > 0 %}
+                                <a href="{% url 'study_session' due_cards.0.card.id %}" 
+                                    class="button is-primary is-rounded is-medium mt-2 gowun-dodum-regular">
+                                    <span class="icon"><i class="fas fa-play"></i></span>
+                                    <span>Start Reviewing</span>
+                                </a>
+                            {% else %}
+                                <p>No cards due for review.</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="box">
+                            <h3 class="title is-5 gowun-dodum-regular mb-4">Quick Actions</h3>
+                            <div class="buttons are-medium">
+                                <a href="{% url 'deck-list' %}?filter=new" 
+                                    class="button is-fullwidth is-info is-outlined gowun-dodum-regular">
+                                    <span class="icon"><i class="fas fa-plus"></i></span>
+                                    <span>Add New Decks</span>
+                                </a>
+                                <a href="{% url 'user_deck_list' %}" 
+                                    class="button is-fullwidth is-info is-outlined gowun-dodum-regular">
+                                    <span class="icon"><i class="fas fa-book"></i></span>
+                                    <span>Modify Curriculum</span>
+                                </a>
+                                <a href="{% url 'profile-edit' %}" 
+                                    class="button is-fullwidth is-info is-outlined gowun-dodum-regular">
+                                    <span class="icon"><i class="fas fa-cog"></i></span>
+                                    <span>Settings</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Active Decks -->
+                    <div class="mobile-active-decks">
+                        {% for deck_stat in deck_stats %}
+                            <div class="box mb-3 has-text-centered">
+                                <h4 class="title is-6">{{ deck_stat.deck.name }}</h4>
+                                <div class="is-flex is-flex-direction-column is-align-items-center" style="height: 100px;">
+                                    <p>Due: 
+                                        {% if deck_stat.count_due_cards_in_deck > 0 %}
+                                            <span class="tag is-warning">{{ deck_stat.count_due_cards_in_deck }}</span>
+                                        {% else %}
+                                            <span class="tag is-success">0</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <a href="{% url 'cards-in-deck' pk=deck_stat.deck.pk %}" 
+                                    class="button is-primary is-rounded gowun-dodum-regular is-fullwidth">
+                                    <span class="icon"><i class="fas fa-book-open"></i></span>
+                                    <span>View Cards</span>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+<style>
+    @media (max-width: 768px) {
+        .table-container table {
+            font-size: 0.9rem; /* Adjust font size for smaller screens */
+        }
+        .progress {
+            display: none;
+        }
+        .is-size-7 {
+            font-size: 0.8rem; /* Adjust percentage text size */
+        }
+    }
+
+    .dashboard-sections {
+        display: flex;
+        flex-direction: column;
+    }
+
+    @media (max-width: 768px) {
+        .dashboard-sections {
+            flex-direction: column-reverse; /* Reverse the order on mobile */
+        }
+    }
+
+    @media (max-width: 768px) {
+        .column.is-8 {
+            display: none; 
+        } 
+    }
+
+    @media (max-width: 768px) {
+        .columns .active-decks:first-child {
+            display: none !important; /* Hide only the first .active-decks section on mobile */
+        }
+        .mobile-active-decks {
+            display: block !important;
+        }
+    }
+    @media (min-width: 769px) {
+        .mobile-active-decks {
+            display: none !important;
+        }
+    }
+</style>
